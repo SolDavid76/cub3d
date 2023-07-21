@@ -6,20 +6,20 @@
 /*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 18:22:41 by djanusz           #+#    #+#             */
-/*   Updated: 2023/07/19 15:44:51 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/07/21 13:28:25 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-t_list	*ft_lstnew(char *content)
+t_list	*ft_lstnew(char *str)
 {
 	t_list	*res;
 
 	res = malloc(sizeof(t_list));
 	if (!res)
 		return (NULL);
-	res->content = content;
+	res->str = str;
 	res->next = NULL;
 	return (res);
 }
@@ -71,7 +71,7 @@ void	*ft_lst_free(t_list	*lst)
 	while (lst)
 	{
 		tmp = lst->next;
-		free(lst->content);
+		free(lst->str);
 		free(lst);
 		lst = tmp;
 	}

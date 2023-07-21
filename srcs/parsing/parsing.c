@@ -6,7 +6,7 @@
 /*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 17:56:08 by djanusz           #+#    #+#             */
-/*   Updated: 2023/07/19 18:25:40 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/07/21 13:36:04 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ void	get_infos(t_pars *pars, char *path)
 	close (fd);
 }
 
-int	whitespace(char *str, int x)
+int	space(char *str, int x)
 {
 	int	i;
 
@@ -158,47 +158,47 @@ int	whitespace(char *str, int x)
 	return (i);
 }
 
-void	mapping(t_pars *pars, t_list *lst)
+char	**mapping(t_list *lst)
 {
-	int	i;
+	char	**res;
+	int		i;
 
-	pars->map = malloc(sizeof(char *) * (ft_lstsize(lst) + 1));
-	if (!pars->map)
-		ft_pars_exit(pars, "NOT ENOUGH MEMORY\n");
-	i = 0;
+	res = malloc(sizeof(char *) * (ft_lstsize(lst) + 1));
+	if (res)
+		exit(1);//not final
 	while (lst)
 	{
-		pars->map[i++] = ft_strdup(lst->content);
+		res[i++] = ft_strdup(lst->str);
 		lst = lst->next;
 	}
-	pars->map[i] = NULL;
+	res[i] = NULL;
+	return (res);
 }
 
-void	get_textures_path(t_pars *pars)
+t_data	get_textures_path(t_list *lst, void *mlx)
 {
-	t_list	*lst;
+	t_data	data;
 
-	lst = pars->lst;
 	while (lst)
 	{
-		if (!ft_strncmp(lst->content, "NO", 2))
-			pars->north = ft_strdup(lst->content + whitespace(lst->content, 2));
-		else if (!ft_strncmp(lst->content, "SO", 2))
-			pars->south = ft_strdup(lst->content + whitespace(lst->content, 2));
-		else if (!ft_strncmp(lst->content, "WE", 2))
-			pars->west = ft_strdup(lst->content + whitespace(lst->content, 2));
-		else if (!ft_strncmp(lst->content, "EA", 2))
-			pars->east = ft_strdup(lst->content + whitespace(lst->content, 2));
-		else if (!ft_strncmp(lst->content, "F", 1))
-			pars->floor = ft_strdup(lst->content + whitespace(lst->content, 1));
-		else if (!ft_strncmp(lst->content, "C", 1))
-			pars->sky = ft_strdup(lst->content + whitespace(lst->content, 1));
+		if (!ft_strncmp(lst->str, "NO", 2))
+			data.north = ft_img(mlx, lst->str + space(lst->str, 2), 720, 480);
+		else if (!ft_strncmp(lst->str, "SO", 2))
+			data.north = ft_img(mlx, lst->str + space(lst->str, 2), 720, 480);
+		else if (!ft_strncmp(lst->str, "WE", 2))
+			data.north = ft_img(mlx, lst->str + space(lst->str, 2), 720, 480);
+		else if (!ft_strncmp(lst->str, "EA", 2))
+			data.north = ft_img(mlx, lst->str + space(lst->str, 2), 720, 480);
+		else if (!ft_strncmp(lst->str, "F", 1))
+			data.floor = ft_strdup(lst->str + whitespace(lst->str, 1));
+		else if (!ft_strncmp(lst->str, "C", 1))
+			data.sky = ft_strdup(lst->str + whitespace(lst->str, 1));
 		else
 			break ;
 		lst = lst->next;
 	}
-	mapping(pars, lst);
-	pars->lst = ft_lst_free(pars->lst);
+	data.map = mapping(lst);
+	return (data);
 }
 
 t_pars	*pars_init(void)
@@ -219,16 +219,18 @@ t_pars	*pars_init(void)
 	return (pars);
 }
 
-t_pars	*parsing(char *path)
+t_win	parsing(char *path)
 {
 	t_pars	*pars;
+	t_win	win;
 
 	if (!path || ft_strcmp((path + ft_strlen(path) - 4), ".cub"))
 		ft_pars_exit(NULL, "error: path doesn't have \".cub\" extension\n");
 	pars = pars_init();
 	get_infos(pars, path);
-	get_textures_path(pars);
-	return (pars);
+	win = create_window();
+	win.data = get_textures_path(pars->lst, win.mlx);
+	return (win);
 }
 
 void	ft_printmap(char **map)
@@ -246,16 +248,10 @@ void	ft_printmap(char **map)
 
 int	main(int ac, char **av)
 {
-	t_pars	*pars;
+	t_win	win;
 
 	(void)ac;
-	pars = parsing(av[1]);
-	ft_printmap(pars->map);
-	printf("NORTH = \"%s\"\n", pars->north);
-	printf("SOUTH = \"%s\"\n", pars->south);
-	printf("WEST = \"%s\"\n", pars->west);
-	printf("EAST = \"%s\"\n", pars->east);
-	printf("F = \"%s\"\n", pars->floor);
-	printf("C = \"%s\"\n", pars->sky);
-	ft_pars_exit(pars, "exit\n");
+
+	win = parsing(av[1]);
+	mlx_loop(win.mlx);
 }
