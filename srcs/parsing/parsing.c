@@ -6,7 +6,7 @@
 /*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 17:56:08 by djanusz           #+#    #+#             */
-/*   Updated: 2023/07/21 13:36:04 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/07/24 17:35:19 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,22 @@ int	ft_strlen(char *str)
 {
 	int	i;
 
-	i = 0;
 	if (!str)
 		return (0);
+	i = 0;
 	while (str[i])
+		i++;
+	return (i);
+}
+
+int	ft_strslen(char **strs)
+{
+	int	i;
+	
+	if (!strs)
+		return (0);
+	i = 0;
+	while (strs[i])
 		i++;
 	return (i);
 }
@@ -89,7 +101,31 @@ char	*ft_strjoin_char(char *str, char c)
 	return (res);
 }
 
-void	*ft_free_tab(char **ptr)
+int	ft_atoi(char *str)
+{
+	int	sign;
+	int	res;
+	int	i;
+
+	i = 0;
+	res = 0;
+	sign = 1;
+	if (!str)
+		return (0);
+	while (str[i] == ' ' || (9 <= str[i] && str[i] <= 13))
+		i++;
+	while (str[i] == '-' || str[i] == '+')
+	{
+		if (str[i] == '-')
+			sign *= -1;
+		i++;
+	}
+	while ('0' <= str[i] && str[i] <= '9')
+		res = (res * 10) + (str[i++] - '0');
+	return (sign * res);
+}
+
+void	*free_tab(char **ptr)
 {
 	int	i;
 
@@ -102,50 +138,36 @@ void	*ft_free_tab(char **ptr)
 	return (NULL);
 }
 
-void	ft_pars_exit(t_pars *pars, char *msg)
+void	ft_exit(char *msg)
 {
-	if (pars)
-	{
-		ft_lst_free(pars->lst);
-		ft_free_tab(pars->map);
-		free(pars->north);
-		free(pars->south);
-		free(pars->west);
-		free(pars->east);
-		free(pars->floor);
-		free(pars->sky);
-		free(pars);
-	}
 	if (msg)
 		write(2, msg, ft_strlen(msg));
 	exit(0);
 }
 
-void	get_infos(t_pars *pars, char *path)
+t_list	*get_infos(int fd)
 {
+	t_list	*lst;
 	char	*str;
 	char	buf;
-	int		fd;
 	int		n;
 
 	n = 1;
-	fd = open(path, O_RDONLY);
-	if (fd == -1)
-		ft_pars_exit(pars, "error: wrong path\n");
+	lst = NULL;
 	while (n)
 	{
+		buf = '\0';
 		str = NULL;
-		while (n)
+		while (n != 0 && buf != '\n')
 		{
-			n = read(fd, &buf, 1);
-			if (n == 0 || buf == '\n')
-				break ;
 			str = ft_strjoin_char(str, buf);
+			n = read(fd, &buf, 1);
 		}
-		if (str)
-			ft_lstadd_back(&pars->lst, ft_lstnew(str));
+		if (str && str[0])
+			ft_lstadd_back(&lst, ft_lstnew(str));
 	}
 	close (fd);
+	return (lst);
 }
 
 int	space(char *str, int x)
@@ -164,8 +186,9 @@ char	**mapping(t_list *lst)
 	int		i;
 
 	res = malloc(sizeof(char *) * (ft_lstsize(lst) + 1));
-	if (res)
-		exit(1);//not final
+	if (!res)
+		ft_exit("NOT ENOUGH MEMORY\n");
+	i = 0;
 	while (lst)
 	{
 		res[i++] = ft_strdup(lst->str);
@@ -175,61 +198,243 @@ char	**mapping(t_list *lst)
 	return (res);
 }
 
-t_data	get_textures_path(t_list *lst, void *mlx)
+void	get_textures(t_data *data, t_list *lst, void *mlx)
 {
-	t_data	data;
-
 	while (lst)
 	{
 		if (!ft_strncmp(lst->str, "NO", 2))
-			data.north = ft_img(mlx, lst->str + space(lst->str, 2), 720, 480);
+			data->north = ft_img(mlx, lst->str + space(lst->str, 2), 50, 50);
 		else if (!ft_strncmp(lst->str, "SO", 2))
-			data.north = ft_img(mlx, lst->str + space(lst->str, 2), 720, 480);
+			data->south = ft_img(mlx, lst->str + space(lst->str, 2), 50, 50);
 		else if (!ft_strncmp(lst->str, "WE", 2))
-			data.north = ft_img(mlx, lst->str + space(lst->str, 2), 720, 480);
+			data->west = ft_img(mlx, lst->str + space(lst->str, 2), 50, 50);
 		else if (!ft_strncmp(lst->str, "EA", 2))
-			data.north = ft_img(mlx, lst->str + space(lst->str, 2), 720, 480);
+			data->east = ft_img(mlx, lst->str + space(lst->str, 2), 50, 50);
 		else if (!ft_strncmp(lst->str, "F", 1))
-			data.floor = ft_strdup(lst->str + whitespace(lst->str, 1));
+			data->floor = ft_strdup(lst->str + space(lst->str, 1));
 		else if (!ft_strncmp(lst->str, "C", 1))
-			data.sky = ft_strdup(lst->str + whitespace(lst->str, 1));
+			data->sky = ft_strdup(lst->str + space(lst->str, 1));
 		else
 			break ;
 		lst = lst->next;
 	}
-	data.map = mapping(lst);
+	data->map = mapping(lst);
+}
+
+t_data	*init_data(void)
+{
+	t_data	*data;
+
+	data = malloc(sizeof(t_data));
+	if (!data)
+		ft_exit("NOT ENOUGH MEMORY\n");
+	data->map = NULL;
+	data->north = NULL;
+	data->south = NULL;
+	data->west = NULL;
+	data->east = NULL;
+	data->floor = NULL;
+	data->sky = NULL;
 	return (data);
 }
 
-t_pars	*pars_init(void)
+void	free_img(t_img *img, void *mlx)
 {
-	t_pars	*pars;
-
-	pars = malloc(sizeof(t_pars));
-	if (!pars)
-		ft_pars_exit(NULL, "NOT ENOUGH MEMORY\n");
-	pars->map = NULL;
-	pars->lst = NULL;
-	pars->north = NULL;
-	pars->south = NULL;
-	pars->west = NULL;
-	pars->east = NULL;
-	pars->floor = NULL;
-	pars->sky = NULL;
-	return (pars);
+	if (img)
+		mlx_destroy_image(mlx, img->ptr);
+	free(img);
 }
+
+void	free_win(t_win win, char *msg)
+{
+	mlx_destroy_image(win.mlx, win.frame.ptr);
+	free_tab(win.data->map);
+	free_img(win.data->north, win.mlx);
+	free_img(win.data->south, win.mlx);
+	free_img(win.data->west, win.mlx);
+	free_img(win.data->east, win.mlx);
+	free(win.data->floor);
+	free(win.data->sky);
+	free(win.data);
+	mlx_destroy_display(win.mlx);
+	free(win.mlx);
+	ft_exit(msg);
+}
+
+char	**ft_strsdup(char **strs)
+{
+	char	**res;
+	int		i;
+
+	res = malloc(sizeof(char *) * (ft_strslen(strs) + 1));
+	if (!res)
+		ft_exit("NET ENOUGH MEMORY\n");
+	i = -1;
+	while (strs[++i])
+		res[i] = ft_strdup(strs[i]);
+	res[i] = NULL;
+	return (res);
+}
+
+int	ft_strchr(char *str, char c)
+{
+	int	i;
+
+	if (!str)
+		return (0);
+	i = 0;
+	while (str[i] && str[i] != c)
+		i++;
+	return (i);
+}
+
+int	ft_strschr(char **strs, char c)
+{
+	int	i;
+
+	if (!strs)
+		return (0);
+	i = 0;
+	while (strs[i] && !ft_strchr(strs[i], c))
+		i++;
+	return (i);
+}
+
+int	path_finding_start(char **map)
+{
+	int	res;
+	int	i;
+	int	j;
+
+	i = 0;
+	res = 0;
+	while (map[i])
+	{
+		j = 0;
+		while (map[i][j])
+		{
+			if (map[i][j] == 'N' || map[i][j] == 'S'
+				|| map[i][j] == 'W' || map[i][j] == 'E')
+			{
+				map[i][j] = 'X';
+				res++;
+			}
+			j++;
+		}
+		i++;
+	}
+	if (res != 1)
+		free_tab(map);
+	return (res);
+}
+
+//mettre a jours les condition pour ne pas sortir en dehors de la map 🙂
+int	path_finding_aux(char **map, int x, int y)
+{
+	int	res;
+	int	i;
+
+	i = 1;
+	res = 0;
+	if (map[y][x + i] && map[y][x + i] != 1 && map[y][x + i] != 'X')
+		map[y][x + i++] = 'X';
+	res += i - 1;
+	i = 1;
+	if (map[y][x - i] && map[y][x - i] != 1 && map[y][x - i] != 'X')
+		map[y][x - i++] = 'X';
+	res += i - 1;
+	i = 1;
+	if (map[y + i][x] && map[y + i][x] != 1 && map[y + i][x] != 'X')
+		map[y + i++][x] = 'X';
+	res += i - 1;
+	i = 1;
+	if (map[y - i][x] && map[y - i][x] != 1 && map[y - i][x] != 'X')
+		map[y - i][x] = 'X';
+	res += i - 1;
+	return (res);
+}
+
+int	path_finding_verif(char **map)
+{
+	int	i;
+
+	i = 0;
+	if (ft_strchr(map[i], 'X'))
+		return (free_tab(map), 1);
+	while (map[i + 1])
+	{
+		if (map[i][0] == 'X' || map[i][ft_strlen(map[i]) - 1] == 'X')
+			return (free_tab(map), 1);
+		i++;
+	}
+	if (ft_strchr(map[i], 'X'))
+		return (free_tab(map), 1);
+	return (free_tab(map), 0);
+}
+
+int	path_finding(t_win win, char **map)
+{
+	int	i;
+	int	j;
+	int	n;
+
+	if (path_finding_start(map) != 1)
+		free_win(win, "Wrong number of player spawn\n");
+	n = 1;
+	while (n)
+	{
+		n = 0;
+		i = 0;
+		while (map[i])
+		{
+			j = 0;
+			while (map[i][j])
+			{
+				if (map[i][j] == 'X')
+					n += path_finding_aux(map, j, i);
+				j++;
+			}
+			i++;
+		}
+	}
+	return (path_finding_verif(map));
+}
+
+// void	ft_printlst(t_list *lst)
+// {
+// 	int	i;
+
+// 	write(1, "----------\n", 11);
+// 	i = 0;
+// 	while (lst)
+// 	{
+// 		printf("%d, %s\n", i++, lst->str);
+// 		lst = lst->next;
+// 	}
+// 	write(1, "----------\n", 11);
+// }
 
 t_win	parsing(char *path)
 {
-	t_pars	*pars;
 	t_win	win;
+	t_list	*lst;
+	int		fd;
 
 	if (!path || ft_strcmp((path + ft_strlen(path) - 4), ".cub"))
-		ft_pars_exit(NULL, "error: path doesn't have \".cub\" extension\n");
-	pars = pars_init();
-	get_infos(pars, path);
-	win = create_window();
-	win.data = get_textures_path(pars->lst, win.mlx);
+		ft_exit("error: path doesn't have \".cub\" extension\n");
+	fd = open(path, O_RDONLY);
+	if (fd == -1)
+		ft_exit("error: wrong path\n");
+	lst = get_infos(fd);
+	win = init_window();
+	win.data = init_data();
+	get_textures(win.data, lst, win.mlx);
+	ft_lst_free(lst);
+	if (!win.data->north || !win.data->south || !win.data->west
+		|| !win.data->east || !win.data->floor || !win.data->sky)
+		free_win(win, "Something went wrong with textures paths\n");
+	if (path_finding(win, ft_strsdup(win.data->map)))
+		free_win(win, "Something went wrong with the map\n");
 	return (win);
 }
 
@@ -246,12 +451,45 @@ void	ft_printmap(char **map)
 	}
 }
 
+void	past_img_to_frame(t_img frame, t_img img, int x, int y)
+{
+	char	*dst;
+	char	*src;
+	int		i;
+	int		j;
+	int		p;
+
+	i = 0;
+	while (i < 50)
+	{
+		j = 0;
+		while (j < 50)
+		{
+			src = img.pxl + (i * img.len + j * (img.bpp / 8));
+			dst = frame.pxl + ((i + y) * frame.len + (j + x) * (frame.bpp / 8));
+			p = 0;
+			while (p < 4)
+			{
+				dst[p] = src[p];
+				p++;
+			}
+			j++;
+		}
+		i++;
+	}
+}
+
 int	main(int ac, char **av)
 {
 	t_win	win;
 
 	(void)ac;
-
 	win = parsing(av[1]);
+	win.ptr = mlx_new_window(win.mlx, win.width, win.height, "cub3D");
+	past_img_to_frame(win.frame, *win.data->north, 0, 0);
+	past_img_to_frame(win.frame, *win.data->south, 100, 0);
+	past_img_to_frame(win.frame, *win.data->west, 200, 0);
+	past_img_to_frame(win.frame, *win.data->east, 300, 0);
+	mlx_put_image_to_window(win.mlx, win.ptr, win.frame.ptr, 0, 0);
 	mlx_loop(win.mlx);
 }
