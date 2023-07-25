@@ -6,7 +6,7 @@
 /*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 17:56:08 by djanusz           #+#    #+#             */
-/*   Updated: 2023/07/24 17:35:19 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/07/25 15:32:29 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,6 +165,8 @@ t_list	*get_infos(int fd)
 		}
 		if (str && str[0])
 			ft_lstadd_back(&lst, ft_lstnew(str));
+		else
+			free(str);
 	}
 	close (fd);
 	return (lst);
@@ -180,18 +182,51 @@ int	space(char *str, int x)
 	return (i);
 }
 
+int	ft_lst_maxlen(t_list *lst)
+{
+	int	res;
+
+	res = 0;
+	while (lst)
+	{
+		if (res < ft_strlen(lst->str))
+			res = ft_strlen(lst->str);
+		lst = lst->next;
+	}
+	return (res);
+}
+
+char	*mapping_aux(char *str, int len)
+{
+	char	*res;
+	int		i;
+
+	res = malloc(sizeof(char) * (len + 1));
+	if (!res)
+		ft_exit("NOT ENOUGH MEMORY\n");
+	i = -1;
+	while (str[++i])
+		res[i] = str[i];
+	while (i < len)
+		res[i++] = ' ';
+	res[i] = '\0';
+	return (res);
+}
+
 char	**mapping(t_list *lst)
 {
 	char	**res;
+	int		len;
 	int		i;
 
 	res = malloc(sizeof(char *) * (ft_lstsize(lst) + 1));
 	if (!res)
 		ft_exit("NOT ENOUGH MEMORY\n");
 	i = 0;
+	len = ft_lst_maxlen(lst);
 	while (lst)
 	{
-		res[i++] = ft_strdup(lst->str);
+		res[i++] = mapping_aux(lst->str, len);
 		lst = lst->next;
 	}
 	res[i] = NULL;
@@ -283,9 +318,13 @@ int	ft_strchr(char *str, char c)
 	if (!str)
 		return (0);
 	i = 0;
-	while (str[i] && str[i] != c)
+	while (str[i])
+	{
+		if (str[i] != c)
+			return (i);
 		i++;
-	return (i);
+	}
+	return (0);
 }
 
 int	ft_strschr(char **strs, char c)
@@ -295,9 +334,13 @@ int	ft_strschr(char **strs, char c)
 	if (!strs)
 		return (0);
 	i = 0;
-	while (strs[i] && !ft_strchr(strs[i], c))
+	while (strs[i])
+	{
+		if (ft_strchr(strs[i], c))
+			return (i);
 		i++;
-	return (i);
+	}
+	return (0);
 }
 
 int	path_finding_start(char **map)
@@ -328,7 +371,6 @@ int	path_finding_start(char **map)
 	return (res);
 }
 
-//mettre a jours les condition pour ne pas sortir en dehors de la map 🙂
 int	path_finding_aux(char **map, int x, int y)
 {
 	int	res;
@@ -336,20 +378,20 @@ int	path_finding_aux(char **map, int x, int y)
 
 	i = 1;
 	res = 0;
-	if (map[y][x + i] && map[y][x + i] != 1 && map[y][x + i] != 'X')
+	while (x + i < ft_strlen(map[y]) && map[y][x + i] != '1' && map[y][x + i] != 'X')
 		map[y][x + i++] = 'X';
 	res += i - 1;
 	i = 1;
-	if (map[y][x - i] && map[y][x - i] != 1 && map[y][x - i] != 'X')
+	while (x - i >= 0 && map[y][x - i] != '1' && map[y][x - i] != 'X')
 		map[y][x - i++] = 'X';
 	res += i - 1;
 	i = 1;
-	if (map[y + i][x] && map[y + i][x] != 1 && map[y + i][x] != 'X')
+	while (y + i < ft_strslen(map) && map[y + i][x] != '1' && map[y + i][x] != 'X')
 		map[y + i++][x] = 'X';
 	res += i - 1;
 	i = 1;
-	if (map[y - i][x] && map[y - i][x] != 1 && map[y - i][x] != 'X')
-		map[y - i][x] = 'X';
+	while (y - i >= 0 && map[y - i][x] != '1' && map[y - i][x] != 'X')
+		map[y - i++][x] = 'X';
 	res += i - 1;
 	return (res);
 }
@@ -372,6 +414,20 @@ int	path_finding_verif(char **map)
 	return (free_tab(map), 0);
 }
 
+void	ft_printmap(char **map)
+{
+	int	i;
+
+	i = 0;
+	while (map[i])
+	{
+		write(1, map[i], ft_strlen(map[i]));
+		write(1, "\n", 1);
+		i++;
+	}
+	write(1, "----------\n", 11);
+}
+
 int	path_finding(t_win win, char **map)
 {
 	int	i;
@@ -383,36 +439,33 @@ int	path_finding(t_win win, char **map)
 	n = 1;
 	while (n)
 	{
+		ft_printmap(map);
 		n = 0;
-		i = 0;
-		while (map[i])
+		i = -1;
+		while (map[++i])
 		{
-			j = 0;
-			while (map[i][j])
+			j = -1;
+			while (map[i][++j])
 			{
 				if (map[i][j] == 'X')
 					n += path_finding_aux(map, j, i);
-				j++;
 			}
-			i++;
 		}
 	}
 	return (path_finding_verif(map));
 }
 
-// void	ft_printlst(t_list *lst)
-// {
-// 	int	i;
-
-// 	write(1, "----------\n", 11);
-// 	i = 0;
-// 	while (lst)
-// 	{
-// 		printf("%d, %s\n", i++, lst->str);
-// 		lst = lst->next;
-// 	}
-// 	write(1, "----------\n", 11);
-// }
+void	ft_printlst(t_list *lst)
+{
+	write(1, "----------\n", 11);
+	while (lst)
+	{
+		write(1, lst->str, ft_strlen(lst->str));
+		write(1, "\n", 1);
+		lst = lst->next;
+	}
+	write(1, "----------\n", 11);
+}
 
 t_win	parsing(char *path)
 {
@@ -429,26 +482,15 @@ t_win	parsing(char *path)
 	win = init_window();
 	win.data = init_data();
 	get_textures(win.data, lst, win.mlx);
+	// ft_printlst(lst);
 	ft_lst_free(lst);
+	// ft_printmap(win.data->map);
 	if (!win.data->north || !win.data->south || !win.data->west
 		|| !win.data->east || !win.data->floor || !win.data->sky)
 		free_win(win, "Something went wrong with textures paths\n");
 	if (path_finding(win, ft_strsdup(win.data->map)))
 		free_win(win, "Something went wrong with the map\n");
 	return (win);
-}
-
-void	ft_printmap(char **map)
-{
-	int	i;
-
-	i = 0;
-	while (map[i])
-	{
-		write(1, map[i], ft_strlen(map[i]));
-		write(1, "\n", 1);
-		i++;
-	}
 }
 
 void	past_img_to_frame(t_img frame, t_img img, int x, int y)
