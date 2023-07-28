@@ -1,4 +1,4 @@
-SRCS_DIR	=	srcs/parsing/
+SRCS_DIR	=	srcs/parsing
 
 SRC			=	parsing.c\
 				graphics.c\
