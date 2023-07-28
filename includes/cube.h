@@ -6,7 +6,7 @@
 /*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 09:43:47 by ennollet          #+#    #+#             */
-/*   Updated: 2023/07/28 14:23:44 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/07/28 16:16:30 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,64 @@
 # define CUBE_H
 
 # include <math.h>
-# include "../minilibx-linux/mlx.h"
-# include <X11/kezysym.h>
+# include "../srcs/minilibx-linux/mlx.h"
+# include <X11/keysym.h>
 # include <stdlib.h>
 # include <X11/X.h>
 # include <unistd.h>
 # include <stdio.h>
 # include <limits.h>
-
+#include "parsing.h"
 # define HEIGHT 720
 # define WIDTH 1280
 # define TEXT_WIDTH 50
 
-typedef struct s_img
-{
-	void	*mlx_img;
-	char	*addr;
-	int		bpp;
-	int		line_len;
-	int		endian;
-}	t_img;
+// typedef struct s_img
+// {
+// 	void	*mlx_img;
+// 	char	*addr;
+// 	int		bpp;
+// 	int		line_len;
+// 	int		endian;
+// }	t_img;
 
-typedef struct s_data
-{
-	void		*mlx;
-	void		*win;
-	t_img		img;
-}			t_data;
+// typedef struct s_data
+// {
+// 	void		*mlx;
+// 	void		*win;
+// 	t_img		img;
+// }			t_data;
+
+
+// typedef struct s_img
+// {
+// 	void	*ptr;
+// 	char	*pxl;
+// 	int		bpp;
+// 	int		len;
+// 	int		endian;
+// }			t_img;
+
+// typedef struct s_data
+// {
+// 	char	**map;
+// 	t_img	*north;
+// 	t_img	*south;
+// 	t_img	*west;
+// 	t_img	*east;
+// 	char	*floor;
+// 	char	*sky;
+// }			t_data;
+
+// typedef struct s_win
+// {
+// 	void	*mlx;
+// 	void	*ptr;
+// 	int		width;
+// 	int		height;
+// 	t_img	frame;
+// 	t_data	*data;
+// }			t_win;
 
 typedef	struct s_player
 {
@@ -58,20 +89,10 @@ typedef	struct s_player
 
 typedef	struct s_ray
 {
-	// position de depart cam
-	// double	pos_x;
-	// double	pos_y;
-	// vecteur de direction
-	// double	dir_x;
-	// double	dir_y;
-	// vecteur du plan de projection
-	// double	plane_x;
-	// double	plane_y;
+	t_win	*win;
+	// t_player	*player;
 	// position de la colonne par rapport au centre
 	double		camera_x; 
-	// position de depart du rayon
-	// double	ray_pos_x;
-	// double	ray_pos_y;
 	// direction du rayon sur x et y
 	double	ray_dir_x;
 	double	ray_dir_y;
@@ -112,10 +133,12 @@ typedef	struct s_ray
 
 }	t_ray;
 
-
+void	past_img_to_frame(t_img frame, t_img img, int x, int y);
 void	my_mlx_pixel_put(t_img *img, int x, int y, int color);
 int	init_mlx(t_data *data);
-int	make_raycasting(t_ray *ray, t_data *data, t_player *player);
+int	make_raycasting(t_ray *ray, t_win *wim, t_player *player);
+t_win	parsing(char *path);
+
 
 
 

@@ -6,31 +6,31 @@
 /*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 09:36:55 by ennollet          #+#    #+#             */
-/*   Updated: 2023/07/28 10:55:36 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/07/28 16:27:05 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube.h"
 
 t_ray	ray;
-t_data		data;
+// t_win		win;
 
-int	init_mlx(t_data *data)
-{
-	data->mlx = mlx_init();
-	if (data->mlx == NULL)
-		return (0);
-	data->win = mlx_new_window(data->mlx, WIDTH, HEIGHT, "Cube3D");
-	if (data->win == NULL)
-	{
-		free(data->win);
-		return (0);
-	}
-	data->img.mlx_img = mlx_new_image(data->mlx, WIDTH, HEIGHT);
-	data->img.addr = mlx_get_data_addr(data->img.mlx_img, &data->img.bpp,
-			&data->img.line_len, &data->img.endian);
-	return (0);
-}
+// int	init_mlx(t_data *data)
+// {
+// 	data->mlx = mlx_init();
+// 	if (data->mlx == NULL)
+// 		return (0);
+// 	data->win = mlx_new_window(data->mlx, WIDTH, HEIGHT, "Cube3D");
+// 	if (data->win == NULL)
+// 	{
+// 		free(data->win);
+// 		return (0);
+// 	}
+// 	data->img.mlx_img = mlx_new_image(data->mlx, WIDTH, HEIGHT);
+// 	data->img.addr = mlx_get_data_addr(data->img.mlx_img, &data->img.bpp,
+// 			&data->img.line_len, &data->img.endian);
+// 	return (0);
+// }
 
 double	ft_abs(double x)
 {
@@ -39,31 +39,30 @@ double	ft_abs(double x)
 	return (x);
 }
 
-t_img	ft_image_from_xpm(t_data win, char *path, int width, int height)
-{
-	t_img	img;
+// t_img	ft_image_from_xpm(t_data win, char *path, int width, int height)
+// {
+// 	t_img	img;
 
-	img.mlx_img = mlx_xpm_file_to_image(win.mlx, path, &width, &height);
-	img.addr = mlx_get_data_addr(img.mlx_img, &img.bpp, &img.line_len, &img.endian);
-	return (img);
-}
+// 	img.mlx_img = mlx_xpm_file_to_image(win.mlx, path, &width, &height);
+// 	img.addr = mlx_get_data_addr(img.mlx_img, &img.bpp, &img.line_len, &img.endian);
+// 	return (img);
+// }
 
 void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
 {
 	char	*pixel;
-
 	// if (x < 0 || y < 0 || x > WIDTH - 1 || y > HEIGHT - 1)
 	// 	return ;
-	pixel = img->addr + (y * img->line_len + x * (img->bpp / 8));
+	pixel = img->pxl + (y * img->len + x * (img->bpp / 8));
 	*(int *)pixel = color;
 }
 
-int	ft_exit(t_data *data)
+int	ft_mlx_exit(t_win *win)
 {
-	mlx_destroy_image(data->mlx, data->img.mlx_img);
-	mlx_destroy_window(data->mlx, data->win);
-	mlx_destroy_display(data->mlx);
-	free(data->mlx);
+	mlx_destroy_image(win->mlx, win->frame.ptr);
+	mlx_destroy_window(win->mlx, win->ptr);
+	mlx_destroy_display(win->mlx);
+	free(win->mlx);
 	exit(0);
 }
 
@@ -84,7 +83,7 @@ int	ft_keypress(int keycode, t_player *player)
 	printf ("keycode : %d\n", keycode);
 	// printf("hello\n");
 	if (keycode == 65307)
-		ft_exit(&data);
+		ft_mlx_exit(ray.win);
 	if (keycode == 119) // W
 		player->pos_x -= 0.1 * (-player->dir_x);
 	if (keycode == 97) // A
@@ -98,7 +97,7 @@ int	ft_keypress(int keycode, t_player *player)
 		ft_rotate(player, -player->rot_speed);
 	if (keycode == 65361)
 		ft_rotate(player, player->rot_speed);
-	make_raycasting(&ray, &data, player);
+	make_raycasting(&ray, ray.win, player);
 	return (0);
 }
 
@@ -231,27 +230,27 @@ void	dda(t_ray *ray)
 int	get_color(t_img *img, int x, int y)
 {
 	// printf("%d %d \n", x ,y );
-	return (*(int *)(img->addr + (y * img->line_len + x * (img->bpp / 8))));
+	return (*(int *)(img->pxl + (y * img->len + x * (img->bpp / 8))));
 }
 
-void draw(t_ray *ray, int x, int y, t_img img, t_data *data)
+void draw(t_ray *ray, int x, int y, t_img *img, t_win *win)
 {
 	int	color;
 
-	color = get_color(&img, ray->text_x, ray->text_y);
-	my_mlx_pixel_put(&data->img, x, y, color);
+	color = get_color(img, ray->text_x, ray->text_y);
+	my_mlx_pixel_put(&win->frame, x, y, color);
 }
 
 void	get_text(t_ray *ray, t_player *player);
 
 
-void	draw_game(t_ray *ray, int x, t_data *data, t_player *player)
+void	draw_game(t_ray *ray, int x, t_win *win, t_player *player)
 {
 	int	y;
 
 	y = 0;
 	while (y != ray->start_h)
-			my_mlx_pixel_put(&data->img, x, y++, 0x0a6cc7);								
+			my_mlx_pixel_put(&win->frame, x, y++, 0x0a6cc7);								
 	while (y < ray->end_h)
 	{
 		// get_text(ray, player);
@@ -263,20 +262,20 @@ void	draw_game(t_ray *ray, int x, t_data *data, t_player *player)
 		// printf("%d %f\n", ray->side, player->dir_y);
 		if (ray->side == 1 && ray->ray_dir_y < 0)
 			// my_mlx_pixel_put(&data->img, x, y, 0xf2);
-			draw(ray, x, y, ray->south, data);
+			draw(ray, x, y, ray->win->data->south, win);
 		else if (ray->side == 1 && ray->ray_dir_y >= 0)
-			// my_mlx_pixel_put(&data->img, x, y, 0xf2);
-			draw(ray, x, y, ray->north, data);
+			// my_mlx_pixel_put(&win->img, x, y, 0xf2);
+			draw(ray, x, y, ray->win->data->north, win);
 		else if (ray->side == 0 && ray->ray_dir_x < 0)
-			// my_mlx_pixel_put(&data->img, x, y, 0xb1b5b2);
-			draw(ray, x, y, ray->west, data);
+			// my_mlx_pixel_put(&win->img, x, y, 0xb1b5b2);
+			draw(ray, x, y, ray->win->data->west, win);
 		else if (ray->side == 0 && ray->ray_dir_x >= 0)
-			draw(ray, x, y, ray->east, data);
+			draw(ray, x, y, ray->win->data->east, win);
 			// my_mlx_pixel_put(&data->img, x, y, 0xb1b5b2);
 		y++;
 	}
 	while (y < HEIGHT - 1)
-		my_mlx_pixel_put(&data->img, x, y++, 0x084a1a);
+		my_mlx_pixel_put(&win->frame, x, y++, 0xFF);
 	(void)player;
 }
 
@@ -298,7 +297,7 @@ void	get_text(t_ray *ray, t_player *player)
 	// printf("%d %d %f\n", ray->start_h, ray->hauteur, ray->step);
 	// ray->text_y = (int)ray->tex_pos & (ray->hauteur - 1);
 }
-int	make_raycasting(t_ray *ray, t_data *data, t_player *player)
+int	make_raycasting(t_ray *ray, t_win *win, t_player *player)
 {
 	printf("boby\n");
 	int	x;
@@ -321,39 +320,60 @@ int	make_raycasting(t_ray *ray, t_data *data, t_player *player)
 		if (ray->end_h >= HEIGHT)
 			ray->end_h = HEIGHT - 1;
 		get_text(ray, player);
-		draw_game(ray, x, data, player);
+		draw_game(ray, x, win, player);
 		x++;
 	}
-	mlx_put_image_to_window(data->mlx, data->win, data->img.mlx_img, 0, 0);	
+	int y = 0;
+	my_mlx_pixel_put(&win->frame, 200, y++, 0xffffff);
+	my_mlx_pixel_put(&win->frame, 200, y++, 0xffffff);
+	my_mlx_pixel_put(&win->frame, 200, y++, 0xffffff);
+	my_mlx_pixel_put(&win->frame, 200, y++, 0xffffff);
+	my_mlx_pixel_put(&win->frame, 200, y++, 0xffffff);
+	my_mlx_pixel_put(&win->frame, 200, y++, 0xffffff);
+	my_mlx_pixel_put(&win->frame, 200, y++, 0xffffff);
+	my_mlx_pixel_put(&win->frame, 200, y++, 0xffffff);
+	my_mlx_pixel_put(&win->frame, 200, y++, 0xffffff);
+	my_mlx_pixel_put(&win->frame, 200, y++, 0xffffff);
+	my_mlx_pixel_put(&win->frame, 200, y++, 0xffffff);
+	my_mlx_pixel_put(&win->frame, 200, y++, 0xffffff);
+	my_mlx_pixel_put(&win->frame, 200, y++, 0xffffff);
+	
+	mlx_put_image_to_window(win->mlx, win->ptr, win->frame.ptr, 0, 0);	
 	return (0);
 }
-void	init_texture(t_ray *ray, t_data data)
-{
-	ray->north = ft_image_from_xpm(data, "textures/tree.xpm", 50, 50);
-	ray->south = ft_image_from_xpm(data, "textures/grass.xpm", 50, 50);
-	ray->east = ft_image_from_xpm(data, "textures/exit.xpm", 50, 50);
-	ray->west = ft_image_from_xpm(data, "textures/player.xpm", 50, 50);
-}
-t_ray	ray;
-t_data		data;
+// void	init_texture(t_ray *ray, t_data data)
+// {
+// 	ray->north = ft_image_from_xpm(data, "textures/tree.xpm", 50, 50);
+// 	ray->south = ft_image_from_xpm(data, "textures/grass.xpm", 50, 50);
+// 	ray->east = ft_image_from_xpm(data, "textures/exit.xpm", 50, 50);
+// 	ray->west = ft_image_from_xpm(data, "textures/player.xpm", 50, 50);
+// }
 
-int main()
+// t_ray	ray;
+// t_win win;
+
+int main(int ac, char **av)
 {
 	// t_data		data;
 	// t_ray		ray;
 	t_player	player;
+	t_win	win;
 	
+	win = parsing(av[1]);
+	win.ptr = mlx_new_window(win.mlx, win.width, win.height, "cub3D");
+	ray.win = &win;
 	init_player(&player);
-	init_mlx(&data);
-	init_texture(&ray, data);
+	// init_mlx(&data);
+	// init_texture(&ray, data);
 	while (1)
 	{
-	make_raycasting(&ray, &data, &player);
-	mlx_hook(data.win, KeyPress, KeyPressMask, &ft_keypress, &player);
-	mlx_hook(data.win, 17, 0, &ft_exit, &data);
-	mlx_loop(data.mlx);
+	make_raycasting(&ray, &win, &player);
+	mlx_hook(win.ptr, KeyPress, KeyPressMask, &ft_keypress, &player);
+	mlx_hook(win.ptr, 17, 0, &ft_mlx_exit, &win);
+	mlx_loop(win.mlx);
 	}
-	mlx_destroy_image(data.mlx, data.img.mlx_img);
-	mlx_destroy_display(data.mlx);
-	free(data.mlx);	
+	mlx_destroy_image(win.mlx, win.frame.ptr);
+	mlx_destroy_display(win.mlx);
+	free(win.mlx);
+	(void)ac;
 }

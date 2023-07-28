@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 17:56:08 by djanusz           #+#    #+#             */
-/*   Updated: 2023/07/25 15:32:29 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/07/28 15:30:50 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
+#include "cube.h"
 
 int	ft_strlen(char *str)
 {
@@ -521,17 +522,17 @@ void	past_img_to_frame(t_img frame, t_img img, int x, int y)
 	}
 }
 
-int	main(int ac, char **av)
-{
-	t_win	win;
+// int	main(int ac, char **av)
+// {
+// 	t_win	win;
 
-	(void)ac;
-	win = parsing(av[1]);
-	win.ptr = mlx_new_window(win.mlx, win.width, win.height, "cub3D");
-	past_img_to_frame(win.frame, *win.data->north, 0, 0);
-	past_img_to_frame(win.frame, *win.data->south, 100, 0);
-	past_img_to_frame(win.frame, *win.data->west, 200, 0);
-	past_img_to_frame(win.frame, *win.data->east, 300, 0);
-	mlx_put_image_to_window(win.mlx, win.ptr, win.frame.ptr, 0, 0);
-	mlx_loop(win.mlx);
-}
+// 	(void)ac;
+// 	win = parsing(av[1]);
+// 	win.ptr = mlx_new_window(win.mlx, win.width, win.height, "cub3D");
+// 	past_img_to_frame(win.frame, *win.data->north, 0, 0);
+// 	past_img_to_frame(win.frame, *win.data->south, 100, 0);
+// 	past_img_to_frame(win.frame, *win.data->west, 200, 0);
+// 	past_img_to_frame(win.frame, *win.data->east, 300, 0);
+// 	mlx_put_image_to_window(win.mlx, win.ptr, win.frame.ptr, 0, 0);
+// 	mlx_loop(win.mlx);
+// }

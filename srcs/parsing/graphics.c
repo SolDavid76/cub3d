@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   graphics.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 12:51:57 by djanusz           #+#    #+#             */
-/*   Updated: 2023/07/24 12:55:36 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/07/28 15:47:09 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ t_win	init_window(void)
 	t_img	tmp;
 
 	win.mlx = mlx_init();
-	win.width = 720;
-	win.height = 480;
+	win.width = 1280;
+	win.height = 720;
 	tmp.ptr = mlx_new_image(win.mlx, win.width, win.height);
 	tmp.pxl = mlx_get_data_addr(tmp.ptr, &tmp.bpp, &tmp.len, &tmp.endian);
 	win.frame = tmp;
