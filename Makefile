@@ -23,7 +23,9 @@ INCS		=	-I ./includes/
 
 MLX			=	srcs/minilibx-linux/libmlx_Linux.a -L -I srcs/minilibx-linux/mlx.h -O3 -lXext -lX11 -lm
 
-all:		${OBJS_DIR} ${NAME}
+MLX_DIR		= srcs/minilibx-linux/
+
+all:		MAKE_MLX ${OBJS_DIR} ${NAME}
 
 ${OBJS_DIR}:
 			mkdir ${OBJS_DIR}
@@ -34,8 +36,12 @@ ${OBJS_DIR}%.o: ${SRCS_DIR}%.c
 ${NAME}:	${OBJS}
 			${CC} ${FLAGS} ${OBJS} -o ${NAME} ${MLX}
 
+MAKE_MLX:
+			make -C ${MLX_DIR}
+
 clean:
 			rm -rf ${OBJS_DIR}
+			make clean -C ${MLX_DIR}
 
 fclean:		clean
 			rm -f ${NAME}
