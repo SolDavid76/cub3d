@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   test.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 09:36:55 by ennollet          #+#    #+#             */
-/*   Updated: 2023/07/28 16:27:05 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/08/03 12:59:39 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube.h"
+#include "parsing.h"
 
 t_ray	ray;
 
@@ -386,7 +387,6 @@ void	get_text(t_ray *ray, t_player *player)
 }
 int	make_raycasting(t_ray *ray, t_win *win, t_player *player)
 {
-	printf("boby\n");
 	int	x;
 	// int	y;
 
@@ -395,12 +395,10 @@ int	make_raycasting(t_ray *ray, t_win *win, t_player *player)
 	while (x < ray->width)
 	{
 		// printf("x = %d\n", x);
-		
 		init_ray(ray, WIDTH, x, player);
 		dda(ray);
-		
 		ray->hauteur = (int)(HEIGHT / ray->fix_dist);
-		ray->start_h = (-ray->hauteur) / 2 + HEIGHT / 2;	
+		ray->start_h = (-ray->hauteur) / 2 + HEIGHT / 2;
 		ray->end_h = ray->hauteur / 2 + HEIGHT / 2;
 		if (ray->start_h < 0)
 			ray->start_h = 0;
@@ -410,22 +408,8 @@ int	make_raycasting(t_ray *ray, t_win *win, t_player *player)
 		draw_game(ray, x, win, player);
 		x++;
 	}
-	int y = 0;
-	my_mlx_pixel_put(&win->frame, 200, y++, 0xffffff);
-	my_mlx_pixel_put(&win->frame, 200, y++, 0xffffff);
-	my_mlx_pixel_put(&win->frame, 200, y++, 0xffffff);
-	my_mlx_pixel_put(&win->frame, 200, y++, 0xffffff);
-	my_mlx_pixel_put(&win->frame, 200, y++, 0xffffff);
-	my_mlx_pixel_put(&win->frame, 200, y++, 0xffffff);
-	my_mlx_pixel_put(&win->frame, 200, y++, 0xffffff);
-	my_mlx_pixel_put(&win->frame, 200, y++, 0xffffff);
-	my_mlx_pixel_put(&win->frame, 200, y++, 0xffffff);
-	my_mlx_pixel_put(&win->frame, 200, y++, 0xffffff);
-	my_mlx_pixel_put(&win->frame, 200, y++, 0xffffff);
-	my_mlx_pixel_put(&win->frame, 200, y++, 0xffffff);
-	my_mlx_pixel_put(&win->frame, 200, y++, 0xffffff);
-	
-	mlx_put_image_to_window(win->mlx, win->ptr, win->frame.ptr, 0, 0);	
+	mlx_put_image_to_window(win->mlx, win->ptr, win->frame.ptr, 0, 0);
+	mini_map(win, player);
 	return (0);
 }
 // void	init_texture(t_ray *ray, t_data data)
@@ -444,20 +428,20 @@ int main(int ac, char **av)
 	// t_data		data;
 	// t_ray		ray;
 	t_player	player;
-	t_win	win;
-	
+	t_win		win;
+	// t_game		game;
+
 	win = parsing(av[1]);
 	win.ptr = mlx_new_window(win.mlx, win.width, win.height, "cub3D");
 	ray.win = &win;
 	init_player(&player);
-	// init_mlx(&data);
-	// init_texture(&ray, data);
+	
 	while (1)
 	{
-	make_raycasting(&ray, &win, &player);
-	mlx_hook(win.ptr, KeyPress, KeyPressMask, &ft_keypress, &player);
-	mlx_hook(win.ptr, 17, 0, &ft_mlx_exit, &win);
-	mlx_loop(win.mlx);
+		make_raycasting(&ray, &win, &player);
+		mlx_hook(win.ptr, KeyPress, KeyPressMask, &ft_keypress, &player);
+		mlx_hook(win.ptr, 17, 0, &ft_mlx_exit, &win);
+		mlx_loop(win.mlx);
 	}
 	mlx_destroy_image(win.mlx, win.frame.ptr);
 	mlx_destroy_display(win.mlx);

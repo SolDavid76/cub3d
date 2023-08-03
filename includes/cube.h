@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 09:43:47 by ennollet          #+#    #+#             */
-/*   Updated: 2023/07/28 16:16:30 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/08/03 13:01:04 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,52 +26,36 @@
 # define WIDTH 1280
 # define TEXT_WIDTH 50
 
-// typedef struct s_img
-// {
-// 	void	*mlx_img;
-// 	char	*addr;
-// 	int		bpp;
-// 	int		line_len;
-// 	int		endian;
-// }	t_img;
+typedef struct s_img
+{
+	void	*ptr;
+	char	*pxl;
+	int		bpp;
+	int		len;
+	int		endian;
+}			t_img;
 
-// typedef struct s_data
-// {
-// 	void		*mlx;
-// 	void		*win;
-// 	t_img		img;
-// }			t_data;
+typedef struct s_data
+{
+	char	**map;
+	t_img	*north;
+	t_img	*south;
+	t_img	*west;
+	t_img	*east;
+	char	*floor;
+	char	*sky;
+}			t_data;
 
-
-// typedef struct s_img
-// {
-// 	void	*ptr;
-// 	char	*pxl;
-// 	int		bpp;
-// 	int		len;
-// 	int		endian;
-// }			t_img;
-
-// typedef struct s_data
-// {
-// 	char	**map;
-// 	t_img	*north;
-// 	t_img	*south;
-// 	t_img	*west;
-// 	t_img	*east;
-// 	char	*floor;
-// 	char	*sky;
-// }			t_data;
-
-// typedef struct s_win
-// {
-// 	void	*mlx;
-// 	void	*ptr;
-// 	int		width;
-// 	int		height;
-// 	t_img	frame;
-// 	t_data	*data;
-// }			t_win;
+typedef struct s_win
+{
+	void	*mlx;
+	void	*ptr;
+	int		width;
+	int		height;
+	t_img	frame;
+	t_img	minimap;
+	t_data	*data;
+}			t_win;
 
 typedef	struct s_player
 {
@@ -133,13 +117,24 @@ typedef	struct s_ray
 
 }	t_ray;
 
+typedef struct s_game
+{
+	t_win		win;
+	t_player	player;
+	t_ray		ray;
+}				t_game;
+
 void	past_img_to_frame(t_img frame, t_img img, int x, int y);
 void	my_mlx_pixel_put(t_img *img, int x, int y, int color);
 int	init_mlx(t_data *data);
 int	make_raycasting(t_ray *ray, t_win *wim, t_player *player);
 t_win	parsing(char *path);
 
+void	mini_map(t_win *win, t_player *player);
 
+/* graphics.c */
+t_win	init_window(void);
+t_img	*ft_img(void *mlx, char *path, int width, int height);
 
 
 #endif

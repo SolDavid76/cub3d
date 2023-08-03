@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 17:56:08 by djanusz           #+#    #+#             */
-/*   Updated: 2023/07/28 15:30:50 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/08/03 12:45:04 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -284,6 +284,7 @@ void	free_img(t_img *img, void *mlx)
 void	free_win(t_win win, char *msg)
 {
 	mlx_destroy_image(win.mlx, win.frame.ptr);
+	mlx_destroy_image(win.mlx, win.minimap.ptr);
 	free_tab(win.data->map);
 	free_img(win.data->north, win.mlx);
 	free_img(win.data->south, win.mlx);
@@ -321,7 +322,7 @@ int	ft_strchr(char *str, char c)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] != c)
+		if (str[i] == c)
 			return (i);
 		i++;
 	}
@@ -372,6 +373,11 @@ int	path_finding_start(char **map)
 	return (res);
 }
 
+int	path_finding_aux_check(char **map, int y, int x)
+{
+	return (map[y][x] != '1' && map[y][x] != 'X');
+}
+
 int	path_finding_aux(char **map, int x, int y)
 {
 	int	res;
@@ -379,19 +385,19 @@ int	path_finding_aux(char **map, int x, int y)
 
 	i = 1;
 	res = 0;
-	while (x + i < ft_strlen(map[y]) && map[y][x + i] != '1' && map[y][x + i] != 'X')
+	while (x + i < ft_strlen(map[y]) && path_finding_aux_check(map, y, x + 1))
 		map[y][x + i++] = 'X';
 	res += i - 1;
 	i = 1;
-	while (x - i >= 0 && map[y][x - i] != '1' && map[y][x - i] != 'X')
+	while (x - i >= 0 && path_finding_aux_check(map, y, x - 1))
 		map[y][x - i++] = 'X';
 	res += i - 1;
 	i = 1;
-	while (y + i < ft_strslen(map) && map[y + i][x] != '1' && map[y + i][x] != 'X')
+	while (y + i < ft_strslen(map) && path_finding_aux_check(map, y + 1, x))
 		map[y + i++][x] = 'X';
 	res += i - 1;
 	i = 1;
-	while (y - i >= 0 && map[y - i][x] != '1' && map[y - i][x] != 'X')
+	while (y - i >= 0 && path_finding_aux_check(map, y - 1, x))
 		map[y - i++][x] = 'X';
 	res += i - 1;
 	return (res);
@@ -415,20 +421,6 @@ int	path_finding_verif(char **map)
 	return (free_tab(map), 0);
 }
 
-void	ft_printmap(char **map)
-{
-	int	i;
-
-	i = 0;
-	while (map[i])
-	{
-		write(1, map[i], ft_strlen(map[i]));
-		write(1, "\n", 1);
-		i++;
-	}
-	write(1, "----------\n", 11);
-}
-
 int	path_finding(t_win win, char **map)
 {
 	int	i;
@@ -440,7 +432,6 @@ int	path_finding(t_win win, char **map)
 	n = 1;
 	while (n)
 	{
-		ft_printmap(map);
 		n = 0;
 		i = -1;
 		while (map[++i])
@@ -456,18 +447,6 @@ int	path_finding(t_win win, char **map)
 	return (path_finding_verif(map));
 }
 
-void	ft_printlst(t_list *lst)
-{
-	write(1, "----------\n", 11);
-	while (lst)
-	{
-		write(1, lst->str, ft_strlen(lst->str));
-		write(1, "\n", 1);
-		lst = lst->next;
-	}
-	write(1, "----------\n", 11);
-}
-
 t_win	parsing(char *path)
 {
 	t_win	win;
@@ -475,17 +454,15 @@ t_win	parsing(char *path)
 	int		fd;
 
 	if (!path || ft_strcmp((path + ft_strlen(path) - 4), ".cub"))
-		ft_exit("error: path doesn't have \".cub\" extension\n");
+		ft_exit("Path doesn't have \".cub\" extension\n");
 	fd = open(path, O_RDONLY);
 	if (fd == -1)
-		ft_exit("error: wrong path\n");
+		ft_exit("Wrong path\n");
 	lst = get_infos(fd);
 	win = init_window();
 	win.data = init_data();
 	get_textures(win.data, lst, win.mlx);
-	// ft_printlst(lst);
 	ft_lst_free(lst);
-	// ft_printmap(win.data->map);
 	if (!win.data->north || !win.data->south || !win.data->west
 		|| !win.data->east || !win.data->floor || !win.data->sky)
 		free_win(win, "Something went wrong with textures paths\n");

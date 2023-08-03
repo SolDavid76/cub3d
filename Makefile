@@ -4,6 +4,7 @@ SRC			=	parsing.c\
 				graphics.c\
 				lst.c\
 				test.c\
+				mini_map.c\
 
 SRCS		=	$(addprefix $(SRCS_DIR), $(SRC))
 
