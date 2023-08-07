@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 09:43:47 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/03 13:01:04 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/08/07 17:39:33 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ typedef struct s_data
 	t_img	*south;
 	t_img	*west;
 	t_img	*east;
-	char	*floor;
-	char	*sky;
+	int		floor;
+	int		sky;
 }			t_data;
 
 typedef struct s_win
@@ -74,7 +74,7 @@ typedef	struct s_player
 typedef	struct s_ray
 {
 	t_win	*win;
-	// t_player	*player;
+	t_player	*player;
 	// position de la colonne par rapport au centre
 	double		camera_x; 
 	// direction du rayon sur x et y
@@ -109,11 +109,6 @@ typedef	struct s_ray
 	int		text_y;
 	double	step;
 	double	tex_pos;
-	// les 4 textures
-	t_img	north;
-	t_img	south;
-	t_img	west;
-	t_img	east;
 
 }	t_ray;
 
@@ -135,6 +130,19 @@ void	mini_map(t_win *win, t_player *player);
 /* graphics.c */
 t_win	init_window(void);
 t_img	*ft_img(void *mlx, char *path, int width, int height);
+
+int	make_raycasting(t_ray *ray, t_win *win, t_player *player);
+void	get_wall_dist(t_ray *ray);
+void	init_ray(t_ray *ray, int width, int x, t_player *player);
+void	draw_game(t_ray *ray, int x, t_win *win, t_player *player);
+void	init_ray(t_ray *ray, int width, int x, t_player *player);
+
+double	ft_abs(double x);
+
+
+
+
+
 
 
 #endif

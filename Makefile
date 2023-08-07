@@ -5,6 +5,9 @@ SRC			=	parsing.c\
 				lst.c\
 				test.c\
 				mini_map.c\
+				raycasting.c\
+				drawing.c\
+				raycasting_utils.c\
 
 SRCS		=	$(addprefix $(SRCS_DIR), $(SRC))
 
