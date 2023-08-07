@@ -6,7 +6,7 @@
 /*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 12:41:20 by djanusz           #+#    #+#             */
-/*   Updated: 2023/08/03 13:09:12 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/08/07 14:36:06 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,13 @@
 
 void	mini_map(t_win *win, t_player *player)
 {
+	int	i;
 	(void)player;
+	i = 0;
+	while (i < win->minimap.len)
+	{
+		*(int *)(win->minimap.pxl + i) = 0xff0000;
+		i += 4;
+	}
 	mlx_put_image_to_window(win->mlx, win->ptr, win->minimap.ptr, 10, 10);
-	mlx_string_put(win->mlx, win->ptr, 70, 85, 0xFFFFFF, "W.I.P");
 }

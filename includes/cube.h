@@ -6,7 +6,7 @@
 /*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 09:43:47 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/03 13:01:04 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/08/07 17:30:42 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ typedef struct s_data
 	t_img	*south;
 	t_img	*west;
 	t_img	*east;
-	char	*floor;
-	char	*sky;
+	int		floor;
+	int		sky;
 }			t_data;
 
 typedef struct s_win
