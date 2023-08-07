@@ -6,7 +6,7 @@
 /*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 17:56:08 by djanusz           #+#    #+#             */
-/*   Updated: 2023/08/03 12:45:04 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/08/07 17:36:00 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,6 +234,26 @@ char	**mapping(t_list *lst)
 	return (res);
 }
 
+int	get_rgb(char *str)
+{
+	int	res;
+	int tmp;
+	int	i;
+
+	i = 0;
+	res = 0;
+	while (str[i])
+	{
+		tmp = 0;
+		while ('0' <= str[i] && str[i] <= '9')
+			tmp = (tmp * 10) + (str[i++] - '0');
+		res = (res * 256) + tmp;
+		while (str[i] == ' ' || str[i] == ',')
+			i++;
+	}
+	return (res);
+}
+
 void	get_textures(t_data *data, t_list *lst, void *mlx)
 {
 	while (lst)
@@ -247,9 +267,9 @@ void	get_textures(t_data *data, t_list *lst, void *mlx)
 		else if (!ft_strncmp(lst->str, "EA", 2))
 			data->east = ft_img(mlx, lst->str + space(lst->str, 2), 50, 50);
 		else if (!ft_strncmp(lst->str, "F", 1))
-			data->floor = ft_strdup(lst->str + space(lst->str, 1));
+			data->floor = get_rgb(lst->str + space(lst->str, 1));
 		else if (!ft_strncmp(lst->str, "C", 1))
-			data->sky = ft_strdup(lst->str + space(lst->str, 1));
+			data->sky = get_rgb(lst->str + space(lst->str, 1));
 		else
 			break ;
 		lst = lst->next;
@@ -269,8 +289,6 @@ t_data	*init_data(void)
 	data->south = NULL;
 	data->west = NULL;
 	data->east = NULL;
-	data->floor = NULL;
-	data->sky = NULL;
 	return (data);
 }
 
@@ -290,8 +308,6 @@ void	free_win(t_win win, char *msg)
 	free_img(win.data->south, win.mlx);
 	free_img(win.data->west, win.mlx);
 	free_img(win.data->east, win.mlx);
-	free(win.data->floor);
-	free(win.data->sky);
 	free(win.data);
 	mlx_destroy_display(win.mlx);
 	free(win.mlx);
