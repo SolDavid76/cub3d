@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 09:43:47 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/08 16:27:41 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/08/08 16:59:07 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ typedef struct s_win
 	void	*ptr;
 	int		width;
 	int		height;
-	t_img	*frame;
-	t_img	*minimap;
+	t_img	frame;
+	t_img	minimap;
 	t_data	*data;
 }			t_win;
 

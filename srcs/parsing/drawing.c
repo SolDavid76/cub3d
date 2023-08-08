@@ -6,7 +6,7 @@
 /*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:15:48 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/07 17:48:56 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/08/08 16:59:29 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void draw(t_ray *ray, int x, int y, t_img *img, t_win *win)
 {
 	int	color;
 
+	// printf("%d %d\n", x, y);
 	color = get_color(img, ray->text_x, ray->text_y);
 	my_mlx_pixel_put(&win->frame, x, y, color);
 }

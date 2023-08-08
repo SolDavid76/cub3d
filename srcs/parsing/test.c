@@ -6,7 +6,7 @@
 /*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 09:36:55 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/08 16:29:57 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/08/08 17:02:40 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ double	ft_abs(double x)
 void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
 {
 	char	*pixel;
-	// if (x < 0 || y < 0 || x > WIDTH - 1 || y > HEIGHT - 1)
-	// 	return ;
+	if (x < 0 || y < 0 || x > WIDTH - 1 || y > HEIGHT - 1)
+		return ;
 	pixel = img->pxl + (y * img->len + x * (img->bpp / 8));
 	*(int *)pixel = color;
 }
@@ -84,7 +84,7 @@ int main(int ac, char **av)
 		mlx_hook(ray.win->ptr, 17, 0, &ft_mlx_exit, &ray.win);
 		mlx_loop(ray.win->mlx);
 	}
-	mlx_destroy_image(ray.win->mlx, ray.win->frame->ptr);
+	mlx_destroy_image(ray.win->mlx, ray.win->frame.ptr);
 	mlx_destroy_display(ray.win->mlx);
 	free(ray.win->mlx);
 	(void)ac;

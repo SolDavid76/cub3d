@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 17:56:08 by djanusz           #+#    #+#             */
-/*   Updated: 2023/08/08 16:23:10 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/08/08 17:02:25 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -279,8 +279,8 @@ void	free_img(t_img *img, void *mlx)
 
 void	free_win(t_win *win, char *msg)
 {
-	mlx_destroy_image(win->mlx, win->frame->ptr);
-	mlx_destroy_image(win->mlx, win->minimap->ptr);
+	mlx_destroy_image(win->mlx, win->frame.ptr);
+	// mlx_destroy_image(win->mlx, win->minimap.ptr);
 	free_tab(win->data->map);
 	free_img(win->data->north, win->mlx);
 	free_img(win->data->south, win->mlx);
@@ -449,6 +449,7 @@ t_win	*parsing(char *path)
 	if (!path || ft_strcmp((path + ft_strlen(path) - 4), ".cub"))
 		ft_exit("Path doesn't have \".cub\" extension\n");
 	win = init_window();
+	printf("%d %d\n", win->frame.len, win->frame.bpp);
 	win->data = init_data();
 	get_textures(win->data, get_infos(open(path, O_RDONLY)), win->mlx);
 	if (!win->data->north || !win->data->south || !win->data->west

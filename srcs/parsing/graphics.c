@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   graphics.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 12:51:57 by djanusz           #+#    #+#             */
-/*   Updated: 2023/08/08 16:19:33 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/08/08 16:58:48 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ t_win	*init_window(void)
 	win->height = 720;
 	tmp.ptr = mlx_new_image(win->mlx, win->width, win->height);
 	tmp.pxl = mlx_get_data_addr(tmp.ptr, &tmp.bpp, &tmp.len, &tmp.endian);
-	win->frame = &tmp;
-	tmp.ptr = mlx_new_image(win->mlx, 150, 150);
-	tmp.pxl = mlx_get_data_addr(tmp.ptr, &tmp.bpp, &tmp.len, &tmp.endian);
-	win->minimap = &tmp;
+	win->frame = tmp;
+	// tmp.ptr = mlx_new_image(win->mlx, 150, 150);
+	// tmp.pxl = mlx_get_data_addr(tmp.ptr, &tmp.bpp, &tmp.len, &tmp.endian);
+	// win->minimap = &tmp;
 	return (win);
 }
 
