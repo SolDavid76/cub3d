@@ -6,26 +6,27 @@
 /*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 12:51:57 by djanusz           #+#    #+#             */
-/*   Updated: 2023/08/03 13:02:25 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/08/08 16:19:33 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-t_win	init_window(void)
+t_win	*init_window(void)
 {
-	t_win	win;
+	t_win	*win;
 	t_img	tmp;
 
-	win.mlx = mlx_init();
-	win.width = 1280;
-	win.height = 720;
-	tmp.ptr = mlx_new_image(win.mlx, win.width, win.height);
+	win = malloc(sizeof(t_win));
+	win->mlx = mlx_init();
+	win->width = 1280;
+	win->height = 720;
+	tmp.ptr = mlx_new_image(win->mlx, win->width, win->height);
 	tmp.pxl = mlx_get_data_addr(tmp.ptr, &tmp.bpp, &tmp.len, &tmp.endian);
-	win.frame = tmp;
-	tmp.ptr = mlx_new_image(win.mlx, 150, 150);
+	win->frame = &tmp;
+	tmp.ptr = mlx_new_image(win->mlx, 150, 150);
 	tmp.pxl = mlx_get_data_addr(tmp.ptr, &tmp.bpp, &tmp.len, &tmp.endian);
-	win.minimap = tmp;
+	win->minimap = &tmp;
 	return (win);
 }
 

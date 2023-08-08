@@ -6,7 +6,7 @@
 /*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 09:43:47 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/07 17:30:42 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/08/08 16:21:16 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ typedef struct s_win
 	void	*ptr;
 	int		width;
 	int		height;
-	t_img	frame;
-	t_img	minimap;
+	t_img	*frame;
+	t_img	*minimap;
 	t_data	*data;
 }			t_win;
 
@@ -124,16 +124,15 @@ typedef struct s_game
 	t_ray		ray;
 }				t_game;
 
-void	past_img_to_frame(t_img frame, t_img img, int x, int y);
 void	my_mlx_pixel_put(t_img *img, int x, int y, int color);
 int	init_mlx(t_data *data);
 int	make_raycasting(t_ray *ray, t_win *wim, t_player *player);
-t_win	parsing(char *path);
 
+t_win	*parsing(char *path);
 void	mini_map(t_win *win, t_player *player);
 
 /* graphics.c */
-t_win	init_window(void);
+t_win	*init_window(void);
 t_img	*ft_img(void *mlx, char *path, int width, int height);
 
 

@@ -6,7 +6,7 @@
 /*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 17:56:08 by djanusz           #+#    #+#             */
-/*   Updated: 2023/08/07 17:36:00 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/08/08 16:23:10 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,30 +102,6 @@ char	*ft_strjoin_char(char *str, char c)
 	return (res);
 }
 
-int	ft_atoi(char *str)
-{
-	int	sign;
-	int	res;
-	int	i;
-
-	i = 0;
-	res = 0;
-	sign = 1;
-	if (!str)
-		return (0);
-	while (str[i] == ' ' || (9 <= str[i] && str[i] <= 13))
-		i++;
-	while (str[i] == '-' || str[i] == '+')
-	{
-		if (str[i] == '-')
-			sign *= -1;
-		i++;
-	}
-	while ('0' <= str[i] && str[i] <= '9')
-		res = (res * 10) + (str[i++] - '0');
-	return (sign * res);
-}
-
 void	*free_tab(char **ptr)
 {
 	int	i;
@@ -155,6 +131,8 @@ t_list	*get_infos(int fd)
 
 	n = 1;
 	lst = NULL;
+	if (fd == -1)
+		ft_exit("Wrong path\n");
 	while (n)
 	{
 		buf = '\0';
@@ -169,8 +147,7 @@ t_list	*get_infos(int fd)
 		else
 			free(str);
 	}
-	close (fd);
-	return (lst);
+	return (close (fd), lst);
 }
 
 int	space(char *str, int x)
@@ -237,7 +214,7 @@ char	**mapping(t_list *lst)
 int	get_rgb(char *str)
 {
 	int	res;
-	int tmp;
+	int	tmp;
 	int	i;
 
 	i = 0;
@@ -275,6 +252,7 @@ void	get_textures(t_data *data, t_list *lst, void *mlx)
 		lst = lst->next;
 	}
 	data->map = mapping(lst);
+	ft_lst_free(lst);
 }
 
 t_data	*init_data(void)
@@ -299,18 +277,19 @@ void	free_img(t_img *img, void *mlx)
 	free(img);
 }
 
-void	free_win(t_win win, char *msg)
+void	free_win(t_win *win, char *msg)
 {
-	mlx_destroy_image(win.mlx, win.frame.ptr);
-	mlx_destroy_image(win.mlx, win.minimap.ptr);
-	free_tab(win.data->map);
-	free_img(win.data->north, win.mlx);
-	free_img(win.data->south, win.mlx);
-	free_img(win.data->west, win.mlx);
-	free_img(win.data->east, win.mlx);
-	free(win.data);
-	mlx_destroy_display(win.mlx);
-	free(win.mlx);
+	mlx_destroy_image(win->mlx, win->frame->ptr);
+	mlx_destroy_image(win->mlx, win->minimap->ptr);
+	free_tab(win->data->map);
+	free_img(win->data->north, win->mlx);
+	free_img(win->data->south, win->mlx);
+	free_img(win->data->west, win->mlx);
+	free_img(win->data->east, win->mlx);
+	free(win->data);
+	mlx_destroy_display(win->mlx);
+	free(win->mlx);
+	free(win);
 	ft_exit(msg);
 }
 
@@ -437,7 +416,7 @@ int	path_finding_verif(char **map)
 	return (free_tab(map), 0);
 }
 
-int	path_finding(t_win win, char **map)
+int	path_finding(t_win *win, char **map)
 {
 	int	i;
 	int	j;
@@ -463,56 +442,21 @@ int	path_finding(t_win win, char **map)
 	return (path_finding_verif(map));
 }
 
-t_win	parsing(char *path)
+t_win	*parsing(char *path)
 {
-	t_win	win;
-	t_list	*lst;
-	int		fd;
+	t_win	*win;
 
 	if (!path || ft_strcmp((path + ft_strlen(path) - 4), ".cub"))
 		ft_exit("Path doesn't have \".cub\" extension\n");
-	fd = open(path, O_RDONLY);
-	if (fd == -1)
-		ft_exit("Wrong path\n");
-	lst = get_infos(fd);
 	win = init_window();
-	win.data = init_data();
-	get_textures(win.data, lst, win.mlx);
-	ft_lst_free(lst);
-	if (!win.data->north || !win.data->south || !win.data->west
-		|| !win.data->east || !win.data->floor || !win.data->sky)
+	win->data = init_data();
+	get_textures(win->data, get_infos(open(path, O_RDONLY)), win->mlx);
+	if (!win->data->north || !win->data->south || !win->data->west
+		|| !win->data->east || !win->data->floor || !win->data->sky)
 		free_win(win, "Something went wrong with textures paths\n");
-	if (path_finding(win, ft_strsdup(win.data->map)))
+	if (path_finding(win, ft_strsdup(win->data->map)))
 		free_win(win, "Something went wrong with the map\n");
 	return (win);
-}
-
-void	past_img_to_frame(t_img frame, t_img img, int x, int y)
-{
-	char	*dst;
-	char	*src;
-	int		i;
-	int		j;
-	int		p;
-
-	i = 0;
-	while (i < 50)
-	{
-		j = 0;
-		while (j < 50)
-		{
-			src = img.pxl + (i * img.len + j * (img.bpp / 8));
-			dst = frame.pxl + ((i + y) * frame.len + (j + x) * (frame.bpp / 8));
-			p = 0;
-			while (p < 4)
-			{
-				dst[p] = src[p];
-				p++;
-			}
-			j++;
-		}
-		i++;
-	}
 }
 
 // int	main(int ac, char **av)
