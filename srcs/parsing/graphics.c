@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   graphics.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 12:51:57 by djanusz           #+#    #+#             */
-/*   Updated: 2023/08/08 16:58:48 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/08/08 17:24:37 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ t_win	*init_window(void)
 	t_img	tmp;
 
 	win = malloc(sizeof(t_win));
+	if (!win)
+		ft_exit("NOT ENOUGH MEMORY\n");
 	win->mlx = mlx_init();
 	win->width = 1280;
 	win->height = 720;

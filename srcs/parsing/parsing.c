@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 17:56:08 by djanusz           #+#    #+#             */
-/*   Updated: 2023/08/08 17:02:25 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/08/08 17:40:05 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -300,7 +300,7 @@ char	**ft_strsdup(char **strs)
 
 	res = malloc(sizeof(char *) * (ft_strslen(strs) + 1));
 	if (!res)
-		ft_exit("NET ENOUGH MEMORY\n");
+		ft_exit("NOT ENOUGH MEMORY\n");
 	i = -1;
 	while (strs[++i])
 		res[i] = ft_strdup(strs[i]);
@@ -340,28 +340,29 @@ int	ft_strschr(char **strs, char c)
 	return (0);
 }
 
-int	path_finding_start(char **map)
+int	path_finding_start(t_win *win, char **map)
 {
 	int	res;
 	int	i;
 	int	j;
 
-	i = 0;
+	i = -1;
 	res = 0;
-	while (map[i])
+	while (map[++i])
 	{
-		j = 0;
-		while (map[i][j])
+		j = -1;
+		while (map[i][++j])
 		{
 			if (map[i][j] == 'N' || map[i][j] == 'S'
 				|| map[i][j] == 'W' || map[i][j] == 'E')
 			{
+				win->data->spawn_x = j;
+				win->data->spawn_y = i;
+				win->data->spawn_dirr = map[i][j];
 				map[i][j] = 'X';
 				res++;
 			}
-			j++;
 		}
-		i++;
 	}
 	if (res != 1)
 		free_tab(map);
@@ -422,7 +423,7 @@ int	path_finding(t_win *win, char **map)
 	int	j;
 	int	n;
 
-	if (path_finding_start(map) != 1)
+	if (path_finding_start(win, map) != 1)
 		free_win(win, "Wrong number of player spawn\n");
 	n = 1;
 	while (n)
@@ -449,7 +450,6 @@ t_win	*parsing(char *path)
 	if (!path || ft_strcmp((path + ft_strlen(path) - 4), ".cub"))
 		ft_exit("Path doesn't have \".cub\" extension\n");
 	win = init_window();
-	printf("%d %d\n", win->frame.len, win->frame.bpp);
 	win->data = init_data();
 	get_textures(win->data, get_infos(open(path, O_RDONLY)), win->mlx);
 	if (!win->data->north || !win->data->south || !win->data->west
@@ -459,18 +459,3 @@ t_win	*parsing(char *path)
 		free_win(win, "Something went wrong with the map\n");
 	return (win);
 }
-
-// int	main(int ac, char **av)
-// {
-// 	t_win	win;
-
-// 	(void)ac;
-// 	win = parsing(av[1]);
-// 	win.ptr = mlx_new_window(win.mlx, win.width, win.height, "cub3D");
-// 	past_img_to_frame(win.frame, *win.data->north, 0, 0);
-// 	past_img_to_frame(win.frame, *win.data->south, 100, 0);
-// 	past_img_to_frame(win.frame, *win.data->west, 200, 0);
-// 	past_img_to_frame(win.frame, *win.data->east, 300, 0);
-// 	mlx_put_image_to_window(win.mlx, win.ptr, win.frame.ptr, 0, 0);
-// 	mlx_loop(win.mlx);
-// }
