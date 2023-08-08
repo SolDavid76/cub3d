@@ -6,7 +6,7 @@
 /*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 09:36:55 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/07 17:35:52 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/08/08 16:11:22 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,87 +30,6 @@ void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
 	// 	return ;
 	pixel = img->pxl + (y * img->len + x * (img->bpp / 8));
 	*(int *)pixel = color;
-}
-
-int	ft_mlx_exit(t_win *win)
-{
-	mlx_destroy_image(win->mlx, win->frame.ptr);
-	mlx_destroy_window(win->mlx, win->ptr);
-	mlx_destroy_display(win->mlx);
-	free(win->mlx);
-	exit(0);
-}
-
-void	ft_rotate(t_player *player, double rot_speed)
-{
-	double old_dir_x;
-	double old_plane_x;
-
-	old_dir_x = player->dir_x;
-	player->dir_x = player->dir_x * cos(rot_speed) - player->dir_y * sin(rot_speed);
-	player->dir_y = old_dir_x * sin(rot_speed) + player->dir_y * cos(rot_speed);
-	old_plane_x = player->plane_x;
-	player->plane_x = player->plane_x * cos(rot_speed) - player->plane_y * sin(rot_speed);
-	player->plane_y = old_plane_x * sin(rot_speed) + player->plane_y * cos(rot_speed);
-}
-
-void	w_and_s(t_ray *ray, t_player *player, int sign)
-{
-	if (sign == 0)
-	{
-		if (ray->win->data->map[(int)(player->pos_x + player->dir_x *(0.2))][(int)player->pos_y] != '1')
-			player->pos_x += player->dir_x *(0.2);
-		if (ray->win->data->map[(int)player->pos_x][(int)(player->pos_y + player->dir_y *(0.2))] != '1')
-			player->pos_y += player->dir_y *(0.2);
-	}
-	else
-	{
-		if (ray->win->data->map[(int)(player->pos_x - player->dir_x *(0.2))][(int)player->pos_y] != '1')
-			player->pos_x -= player->dir_x *(0.2);
-		if (ray->win->data->map[(int)player->pos_x][(int)(player->pos_y - player->dir_y *(0.2))] != '1')
-			player->pos_y -= player->dir_y *(0.2);
-	}
-
-}
-
-void	a_and_d(t_ray *ray, t_player *player, int sign)
-{
-	if (sign == 0)
-	{
-		if (ray->win->data->map[(int)(player->pos_x + player->plane_x *(0.12))][(int)player->pos_y] != '1')
-			player->pos_x += player->plane_x *(0.12);
-		if (ray->win->data->map[(int)player->pos_x][(int)(player->pos_y + player->plane_y *(0.12))] != '1')
-			player->pos_y += player->plane_y *(0.12);
-	}
-	else
-	{
-		if (ray->win->data->map[(int)(player->pos_x - player->plane_x *(0.12))][(int)player->pos_y] != '1')
-			player->pos_x -= player->plane_x *(0.12);
-		if (ray->win->data->map[(int)player->pos_x][(int)(player->pos_y - player->plane_y *(0.12))] != '1')
-			player->pos_y -= player->plane_y *(0.12);
-	}
-}
-
-
-int	ft_keypress(int keycode, t_ray *ray)
-{		
-	printf ("keycode : %d\n", keycode);
-	if (keycode == 65307)
-		ft_mlx_exit(ray->win);
-	if (keycode == 119 || keycode == 122) // W
-		w_and_s(ray, ray->player, 0);
-	if (keycode == 97 || keycode == 113) // A
-	a_and_d(ray, ray->player, 1);
-	if (keycode == 115) // S
-		w_and_s(ray, ray->player, 1);
-	if (keycode == 100) // D
-	a_and_d(ray, ray->player, 0);
-	if (keycode  == 65363) // droite
-		ft_rotate(ray->player, -ray->player->rot_speed);
-	if (keycode == 65361)
-		ft_rotate(ray->player, ray->player->rot_speed);
-	make_raycasting(ray, ray->win, ray->player);
-	return (0);
 }
 
 t_player	*init_player(t_player *player)
@@ -151,21 +70,23 @@ int main(int ac, char **av)
 	// t_player	player;
 	t_win		win;
 	// t_game		game;
-
+	
 	win = parsing(av[1]);
-	win.ptr = mlx_new_window(win.mlx, win.width, win.height, "cub3D");
 	ray.win = &win;
+	ray.win->ptr = mlx_new_window(ray.win->mlx, ray.win->width, ray.win->height, "cub3D");
+	// ray.win = &win;
 	ray.player = init_player(ray.player);
 	
 	while (1)
 	{
-		make_raycasting(&ray, &win, ray.player);
-		mlx_hook(win.ptr, KeyPress, KeyPressMask, &ft_keypress, &ray);
-		mlx_hook(win.ptr, 17, 0, &ft_mlx_exit, &win);
-		mlx_loop(win.mlx);
+		make_raycasting(&ray, ray.win, ray.player);
+		mlx_hook(ray.win->ptr, KeyPress, KeyPressMask, &ft_keypress, &ray);
+		mlx_hook(ray.win->ptr, 17, 0, &ft_mlx_exit, &ray.win);
+		mlx_loop(ray.win->mlx);
 	}
-	mlx_destroy_image(win.mlx, win.frame.ptr);
-	mlx_destroy_display(win.mlx);
-	free(win.mlx);
+	mlx_destroy_image(ray.win->mlx, ray.win->frame.ptr);
+	mlx_destroy_display(ray.win->mlx);
+	free(ray.win->mlx);
 	(void)ac;
+	// (void)ray.win;
 }

@@ -8,6 +8,7 @@ SRC			=	parsing.c\
 				raycasting.c\
 				drawing.c\
 				raycasting_utils.c\
+				move.c\
 
 SRCS		=	$(addprefix $(SRCS_DIR), $(SRC))
 

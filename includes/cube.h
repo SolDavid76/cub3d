@@ -6,7 +6,7 @@
 /*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 09:43:47 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/07 17:42:48 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/08/08 16:21:59 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ typedef	struct s_ray
 	int		hauteur;
 	int		start_h;
 	int		end_h;
+	int		jump;
 	double	width;
 	// calculer les position dans les textures
 	double	wall_x;
@@ -122,7 +123,7 @@ typedef struct s_game
 void	past_img_to_frame(t_img frame, t_img img, int x, int y);
 void	my_mlx_pixel_put(t_img *img, int x, int y, int color);
 int	init_mlx(t_data *data);
-int	make_raycasting(t_ray *ray, t_win *wim, t_player *player);
+int	make_raycasting(t_ray *ray, t_win *win, t_player *player);
 t_win	parsing(char *path);
 
 void	mini_map(t_win *win, t_player *player);
@@ -136,6 +137,9 @@ void	get_wall_dist(t_ray *ray);
 void	init_ray(t_ray *ray, int width, int x, t_player *player);
 void	draw_game(t_ray *ray, int x, t_win *win, t_player *player);
 void	init_ray(t_ray *ray, int width, int x, t_player *player);
+
+int	ft_keypress(int keycode, t_ray *ray);
+int	ft_mlx_exit(t_win *win);
 
 double	ft_abs(double x);
 
