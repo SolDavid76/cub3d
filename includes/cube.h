@@ -6,7 +6,7 @@
 /*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 09:43:47 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/08 16:21:16 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/08/08 16:27:41 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ typedef	struct s_player
 typedef	struct s_ray
 {
 	t_win	*win;
-	// t_player	*player;
+	t_player	*player;
 	// position de la colonne par rapport au centre
 	double		camera_x; 
 	// direction du rayon sur x et y
@@ -102,6 +102,7 @@ typedef	struct s_ray
 	int		hauteur;
 	int		start_h;
 	int		end_h;
+	int		jump;
 	double	width;
 	// calculer les position dans les textures
 	double	wall_x;
@@ -109,11 +110,6 @@ typedef	struct s_ray
 	int		text_y;
 	double	step;
 	double	tex_pos;
-	// les 4 textures
-	t_img	north;
-	t_img	south;
-	t_img	west;
-	t_img	east;
 
 }	t_ray;
 
@@ -134,6 +130,22 @@ void	mini_map(t_win *win, t_player *player);
 /* graphics.c */
 t_win	*init_window(void);
 t_img	*ft_img(void *mlx, char *path, int width, int height);
+
+int	make_raycasting(t_ray *ray, t_win *win, t_player *player);
+void	get_wall_dist(t_ray *ray);
+void	init_ray(t_ray *ray, int width, int x, t_player *player);
+void	draw_game(t_ray *ray, int x, t_win *win, t_player *player);
+void	init_ray(t_ray *ray, int width, int x, t_player *player);
+
+int	ft_keypress(int keycode, t_ray *ray);
+int	ft_mlx_exit(t_win *win);
+
+double	ft_abs(double x);
+
+
+
+
+
 
 
 #endif
