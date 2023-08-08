@@ -6,7 +6,7 @@
 /*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 09:36:55 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/08 16:11:22 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/08/08 16:29:57 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,11 @@ int main(int ac, char **av)
 	// t_data		data;
 	t_ray		ray;
 	// t_player	player;
-	t_win		win;
+	// t_win		win;
 	// t_game		game;
 	
-	win = parsing(av[1]);
-	ray.win = &win;
+	ray.win = parsing(av[1]);
+	// ray.win = &win;
 	ray.win->ptr = mlx_new_window(ray.win->mlx, ray.win->width, ray.win->height, "cub3D");
 	// ray.win = &win;
 	ray.player = init_player(ray.player);
@@ -84,7 +84,7 @@ int main(int ac, char **av)
 		mlx_hook(ray.win->ptr, 17, 0, &ft_mlx_exit, &ray.win);
 		mlx_loop(ray.win->mlx);
 	}
-	mlx_destroy_image(ray.win->mlx, ray.win->frame.ptr);
+	mlx_destroy_image(ray.win->mlx, ray.win->frame->ptr);
 	mlx_destroy_display(ray.win->mlx);
 	free(ray.win->mlx);
 	(void)ac;

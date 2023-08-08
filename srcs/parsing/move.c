@@ -6,7 +6,7 @@
 /*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:47:42 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/08 16:24:24 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/08/08 16:27:18 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,13 @@ void	a_and_d(t_ray *ray, t_player *player, int sign)
 	}
 }
 
-// void jump(t_ray *ray)
-// {
-// 	if (ray->jump == 0)
-// 		ray->jump = 10/ray->fix_dist;
-// }
+void jump(t_ray *ray)
+{
+	if (ray->jump == 0)
+		ray->jump = 10/ray->fix_dist;
+	else
+		ray->jump = 0;
+}
 
 int	ft_keypress(int keycode, t_ray *ray)
 {		
@@ -94,6 +96,8 @@ int	ft_keypress(int keycode, t_ray *ray)
 		ft_rotate(ray->player, -ray->player->rot_speed);
 	if (keycode == 65361)
 		ft_rotate(ray->player, ray->player->rot_speed);
+	if (keycode == 32)
+		jump(ray);
 	make_raycasting(ray, ray->win, ray->player);
 	return (0);
 }
