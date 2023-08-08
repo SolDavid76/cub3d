@@ -6,7 +6,7 @@
 /*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:09:01 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/08 17:03:11 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/08/08 17:43:50 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	get_text(t_ray *ray, t_player *player)
 	else if (ray->side == 1 && ray->ray_dir_y < 0)
 		ray->text_x =  TEXT_WIDTH - ray->text_x - 1;
 	ray->step = 1.0 * TEXT_WIDTH / ray->hauteur;
-	ray->tex_pos = (ray->start_h - HEIGHT / 2 + ray->hauteur / 2) * ray->step;
+	ray->tex_pos = (ray->start_h - (ray->jump / ray->fix_dist) - HEIGHT / 2 + ray->hauteur / 2) * ray->step;
 	// printf("%d %d %f\n", ray->start_h, ray->hauteur, ray->step);
 	// ray->text_y = (int)ray->tex_pos & (ray->hauteur - 1);
 }
@@ -57,8 +57,8 @@ int	make_raycasting(t_ray *ray, t_win *win, t_player *player)
 		init_ray(ray, WIDTH, x, player);
 		dda(ray);
 		ray->hauteur = (int)(HEIGHT / ray->fix_dist);
-		ray->start_h = (-ray->hauteur) / 2 + HEIGHT / 2;
-		ray->end_h = ray->hauteur / 2 + HEIGHT / 2;
+		ray->start_h = (-ray->hauteur) / 2 + HEIGHT / 2 + (ray->jump / ray->fix_dist);
+		ray->end_h = ray->hauteur / 2 + HEIGHT / 2 + (ray->jump / ray->fix_dist);
 		if (ray->start_h < 0)
 			ray->start_h = 0;
 		if (ray->end_h >= HEIGHT)
