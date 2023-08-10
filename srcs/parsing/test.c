@@ -6,7 +6,7 @@
 /*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 09:36:55 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/08 17:02:40 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/08/08 18:10:41 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,47 @@ void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
 	pixel = img->pxl + (y * img->len + x * (img->bpp / 8));
 	*(int *)pixel = color;
 }
-
-t_player	*init_player(t_player *player)
+void	init_dir(t_player *player, t_ray *ray)
+{
+	if (ray->win->data->spawn_dirr == 'N')
+	{
+		player->dir_x = -1;
+		player->dir_y = 0;
+		player->plane_x = 0;
+		player->plane_y = 0.66;
+	}
+	else if (ray->win->data->spawn_dirr == 'S')
+	{
+		player->dir_x = 1;
+		player->dir_y = 0;
+		player->plane_x = 0;
+		player->plane_y = -0.66;
+	}	
+	else if (ray->win->data->spawn_dirr == 'E')
+	{
+		player->dir_x = 0;
+		player->dir_y = 1;
+		player->plane_x = 0.66;
+		player->plane_y = 0;
+	}
+	else if (ray->win->data->spawn_dirr == 'W')
+	{
+		player->dir_x = 0;
+		player->dir_y = -1;
+		player->plane_x = -0.66;
+		player->plane_y = 0;
+	}
+}
+t_player	*init_player(t_player *player, t_ray *ray)
 {
 	player = malloc(sizeof(t_player));
-	player->pos_x = 5.5;
-	player->pos_y = 1.5;
-	player->dir_x = -1;
-	player->dir_y = 0;
-	player->plane_x = 0;
-	player->plane_y = 0.66;
+	player->pos_x = ray->win->data->spawn_x + 0.1;
+	player->pos_y = ray->win->data->spawn_y + 0.1;
+	// player->dir_x = -1;
+	// player->dir_y = 0;
+	// player->plane_x = 0;
+	// player->plane_y = 0.66;
+	init_dir(player, ray);
 	player->rot_speed = 0.1;
 	return (player);
 }
@@ -75,7 +106,7 @@ int main(int ac, char **av)
 	// ray.win = &win;
 	ray.win->ptr = mlx_new_window(ray.win->mlx, ray.win->width, ray.win->height, "cub3D");
 	// ray.win = &win;
-	ray.player = init_player(ray.player);
+	ray.player = init_player(ray.player, &ray);
 	
 	while (1)
 	{

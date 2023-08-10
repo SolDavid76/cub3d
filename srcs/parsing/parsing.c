@@ -6,7 +6,7 @@
 /*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 17:56:08 by djanusz           #+#    #+#             */
-/*   Updated: 2023/08/08 17:49:12 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/08/10 11:57:26 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -356,8 +356,8 @@ int	path_finding_start(t_win *win, char **map)
 			if (map[i][j] == 'N' || map[i][j] == 'S'
 				|| map[i][j] == 'W' || map[i][j] == 'E')
 			{
-				win->data->spawn_x = j;
-				win->data->spawn_y = i;
+				win->data->spawn_x = i;
+				win->data->spawn_y = j;
 				win->data->spawn_dirr = map[i][j];
 				map[i][j] = 'X';
 				res++;

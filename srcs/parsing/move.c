@@ -6,7 +6,7 @@
 /*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:47:42 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/08 17:03:26 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/08/08 17:33:40 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	a_and_d(t_ray *ray, t_player *player, int sign)
 void jump(t_ray *ray)
 {
 	if (ray->jump == 0)
-		ray->jump = 10/ray->fix_dist;
+		ray->jump = 200;
 	else
 		ray->jump = 0;
 }
