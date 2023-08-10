@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   drawing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:15:48 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/08 18:21:24 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/08/10 12:00:09 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 int	get_color(t_img *img, int x, int y)
 {
-	if (x == 0 && y == 0)
-		printf("%d %d \n", x ,y );
 	return (*(int *)(img->pxl + (y * img->len + x * (img->bpp / 8))));
 }
 
