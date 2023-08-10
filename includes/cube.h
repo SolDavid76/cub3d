@@ -6,7 +6,7 @@
 /*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 09:43:47 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/08 17:36:49 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/08/08 17:49:00 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ typedef struct s_win
 	int		width;
 	int		height;
 	t_img	frame;
-	t_img	minimap;
+	t_img	mini_map;
 	t_data	*data;
 }			t_win;
 

@@ -6,7 +6,7 @@
 /*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 12:51:57 by djanusz           #+#    #+#             */
-/*   Updated: 2023/08/08 17:24:37 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/08/08 17:49:28 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ t_win	*init_window(void)
 	tmp.ptr = mlx_new_image(win->mlx, win->width, win->height);
 	tmp.pxl = mlx_get_data_addr(tmp.ptr, &tmp.bpp, &tmp.len, &tmp.endian);
 	win->frame = tmp;
-	// tmp.ptr = mlx_new_image(win->mlx, 150, 150);
-	// tmp.pxl = mlx_get_data_addr(tmp.ptr, &tmp.bpp, &tmp.len, &tmp.endian);
-	// win->minimap = &tmp;
+	tmp.ptr = mlx_new_image(win->mlx, 150, 150);
+	tmp.pxl = mlx_get_data_addr(tmp.ptr, &tmp.bpp, &tmp.len, &tmp.endian);
+	win->mini_map = tmp;
 	return (win);
 }
 

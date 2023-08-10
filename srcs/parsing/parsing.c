@@ -6,7 +6,7 @@
 /*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 17:56:08 by djanusz           #+#    #+#             */
-/*   Updated: 2023/08/08 17:40:05 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/08/08 17:49:12 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	ft_strlen(char *str)
 int	ft_strslen(char **strs)
 {
 	int	i;
-	
+
 	if (!strs)
 		return (0);
 	i = 0;
@@ -280,7 +280,7 @@ void	free_img(t_img *img, void *mlx)
 void	free_win(t_win *win, char *msg)
 {
 	mlx_destroy_image(win->mlx, win->frame.ptr);
-	// mlx_destroy_image(win->mlx, win->minimap.ptr);
+	mlx_destroy_image(win->mlx, win->mini_map.ptr);
 	free_tab(win->data->map);
 	free_img(win->data->north, win->mlx);
 	free_img(win->data->south, win->mlx);
