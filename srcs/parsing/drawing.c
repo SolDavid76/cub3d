@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   drawing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:15:48 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/10 12:00:09 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/08/11 13:22:34 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void draw(t_ray *ray, int x, int y, t_img *img, t_win *win)
 	// printf("%d %d\n", x, y);
 	color = get_color(img, ray->text_x, ray->text_y);
 	my_mlx_pixel_put(&win->frame, x, y, color);
+	// if (ray->jump > 0)
+	// 	printf("%d\n", ray->text_y);
 }
 
 void	draw_game(t_ray *ray, int x, t_win *win, t_player *player)
@@ -37,8 +39,8 @@ void	draw_game(t_ray *ray, int x, t_win *win, t_player *player)
 	{
 		// get_text(ray, player);
 		ray->tex_pos += ray->step;
-		// ray->text_y = (int)ray->tex_pos & (ray->hauteur - 1);
-		ray->text_y = (y * 2 - (ray->jump / ray->fix_dist) - HEIGHT + ray->hauteur) * (50 / 2) / ray->hauteur;
+		ray->text_y = (int)ray->tex_pos;
+		// ray->text_y = (y * 2 - (ray->jump / ray->fix_dist) - HEIGHT + ray->hauteur) * (50 / 2) / ray->hauteur;
 		// if (ray->side == 1 && player->dir_y < 0)
 		// 	printf("hello 111111\n");
 		// printf("%d %f\n", ray->side, player->dir_y);

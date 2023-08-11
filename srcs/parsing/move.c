@@ -6,7 +6,7 @@
 /*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:47:42 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/08 17:33:40 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/08/11 16:40:59 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,13 +74,21 @@ void	a_and_d(t_ray *ray, t_player *player, int sign)
 void jump(t_ray *ray)
 {
 	if (ray->jump == 0)
-		ray->jump = 200;
+		ray->jump = 75;
+	else
+		ray->jump = 0;
+}
+
+void crouch(t_ray *ray)
+{
+	if (ray->jump == 0)
+		ray->jump = -75;
 	else
 		ray->jump = 0;
 }
 
 int	ft_keypress(int keycode, t_ray *ray)
-{		
+{	
 	printf ("keycode : %d\n", keycode);
 	if (keycode == 65307)
 		ft_mlx_exit(ray->win);
@@ -98,6 +106,9 @@ int	ft_keypress(int keycode, t_ray *ray)
 		ft_rotate(ray->player, ray->player->rot_speed);
 	if (keycode == 32)
 		jump(ray);
+	if (keycode == 65505)
+		crouch(ray);
 	make_raycasting(ray, ray->win, ray->player);
+
 	return (0);
 }

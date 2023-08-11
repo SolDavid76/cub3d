@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:09:01 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/10 11:57:39 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/08/11 16:38:52 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,21 @@ void	get_text(t_ray *ray, t_player *player)
 	// ray->text_y = (int)ray->tex_pos & (ray->hauteur - 1);
 }
 
+void print_pxl(char *pxl)
+{
+	int i = 0;
+	while (pxl[i])
+	{
+		write(1, pxl + i, 1);
+		i++;
+	}
+	write(1, "\n", 1);
+}
+
+
 int	make_raycasting(t_ray *ray, t_win *win, t_player *player)
 {
+	// printf("jump = %d\n", ray->jump);
 	int	x;
 	// int	y;
 
@@ -53,7 +66,6 @@ int	make_raycasting(t_ray *ray, t_win *win, t_player *player)
 	ray->width = WIDTH;
 	while (x < ray->width)
 	{
-		// printf("x = %d\n", x);
 		init_ray(ray, WIDTH, x, player);
 		dda(ray);
 		ray->hauteur = (int)(HEIGHT / ray->fix_dist);
