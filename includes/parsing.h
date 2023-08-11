@@ -6,7 +6,7 @@
 /*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 17:57:57 by djanusz           #+#    #+#             */
-/*   Updated: 2023/08/03 13:00:57 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/08/11 12:16:18 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void	ft_lstadd_back(t_list **lst, t_list *new);
 void	*ft_lst_free(t_list	*lst);
 
 /* main.c */
+int		ft_strlen(char *str);
 void	ft_exit(char *msg);
 
 #endif
