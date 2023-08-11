@@ -6,7 +6,7 @@
 /*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:47:42 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/11 16:40:59 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/08/11 16:43:28 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,8 @@ void crouch(t_ray *ray)
 }
 
 int	ft_keypress(int keycode, t_ray *ray)
-{	
-	printf ("keycode : %d\n", keycode);
+{
+	// printf ("keycode : %d\n", keycode);
 	if (keycode == 65307)
 		ft_mlx_exit(ray->win);
 	if (keycode == 119 || keycode == 122) // W

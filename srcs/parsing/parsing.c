@@ -6,7 +6,7 @@
 /*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 17:56:08 by djanusz           #+#    #+#             */
-/*   Updated: 2023/08/10 11:57:26 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/08/11 14:45:20 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -270,6 +270,32 @@ t_data	*init_data(void)
 	return (data);
 }
 
+t_data	*fill_data(t_data *data)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (data->map[i])
+	{
+		j = 0;
+		while (data->map[i][j])
+		{
+			if (data->map[i][j] == 'N' || data->map[i][j] == 'S'
+				|| data->map[i][j] == 'W' || data->map[i][j] == 'E')
+			{
+				data->spawn_x = i;
+				data->spawn_y = j;
+				data->spawn_dirr = data->map[i][j];
+				data->map[i][j] = '0';
+			}
+			j++;
+		}
+		i++;
+	}
+	return (data);
+}
+
 void	free_img(t_img *img, void *mlx)
 {
 	if (img)
@@ -340,7 +366,7 @@ int	ft_strschr(char **strs, char c)
 	return (0);
 }
 
-int	path_finding_start(t_win *win, char **map)
+int	path_finding_start(char **map)
 {
 	int	res;
 	int	i;
@@ -356,9 +382,6 @@ int	path_finding_start(t_win *win, char **map)
 			if (map[i][j] == 'N' || map[i][j] == 'S'
 				|| map[i][j] == 'W' || map[i][j] == 'E')
 			{
-				win->data->spawn_x = i;
-				win->data->spawn_y = j;
-				win->data->spawn_dirr = map[i][j];
 				map[i][j] = 'X';
 				res++;
 			}
@@ -423,7 +446,7 @@ int	path_finding(t_win *win, char **map)
 	int	j;
 	int	n;
 
-	if (path_finding_start(win, map) != 1)
+	if (path_finding_start(map) != 1)
 		free_win(win, "Wrong number of player spawn\n");
 	n = 1;
 	while (n)
@@ -457,5 +480,6 @@ t_win	*parsing(char *path)
 		free_win(win, "Something went wrong with textures paths\n");
 	if (path_finding(win, ft_strsdup(win->data->map)))
 		free_win(win, "Something went wrong with the map\n");
+	win->data = fill_data(win->data);
 	return (win);
 }
