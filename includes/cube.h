@@ -6,7 +6,7 @@
 /*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 09:43:47 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/11 15:50:36 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/08/14 11:37:05 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ typedef	struct s_ray
 	int		start_h;
 	int		end_h;
 	int		jump;
+	int		jump_nb;
 	double	width;
 	// calculer les position dans les textures
 	double	wall_x;
@@ -125,7 +126,7 @@ typedef struct s_game
 
 void	my_mlx_pixel_put(t_img *img, int x, int y, int color);
 int	init_mlx(t_data *data);
-int	make_raycasting(t_ray *ray, t_win *wim, t_player *player);
+int	make_raycasting(t_ray *ray);
 
 t_win	*parsing(char *path);
 void	mini_map(t_win *win, t_player *player);
@@ -134,7 +135,6 @@ void	mini_map(t_win *win, t_player *player);
 t_win	*init_window(void);
 t_img	*ft_img(void *mlx, char *path, int width, int height);
 
-int	make_raycasting(t_ray *ray, t_win *win, t_player *player);
 void	get_wall_dist(t_ray *ray);
 void	init_ray(t_ray *ray, int width, int x, t_player *player);
 void	draw_game(t_ray *ray, int x, t_win *win, t_player *player);
