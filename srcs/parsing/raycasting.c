@@ -6,7 +6,7 @@
 /*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:09:01 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/14 15:26:07 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/08/16 17:56:41 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,25 +42,25 @@ void	get_text(t_ray *ray, t_player *player)
 }
 void	frame_jump(t_ray *ray)
 {
-	if (ray->jump_nb == 2 * 2)
+	if (ray->jump_nb == 4 * 2)
 		ray->jump =  2*  50;
-	else if (ray->jump_nb == 2 * 4)
+	else if (ray->jump_nb == 4 * 4)
 		ray->jump =  2*  100;
-	else if (ray->jump_nb == 2 * 6)
+	else if (ray->jump_nb == 4 * 6)
 		ray->jump =  2*  150;
-	else if (ray->jump_nb == 2 * 8)
+	else if (ray->jump_nb == 4 * 8)
 		ray->jump =  2*  200;
-	else if (ray->jump_nb == 2 * 10)
+	else if (ray->jump_nb == 4 * 10)
 		ray->jump =  2*  200;
-	else if (ray->jump_nb == 2 * 12)
+	else if (ray->jump_nb == 4 * 12)
 		ray->jump =  2*  200;
-	else if (ray->jump_nb == 2 * 14)
+	else if (ray->jump_nb == 4 * 14)
 		ray->jump =  2*  130;
-	else if (ray->jump_nb == 2 * 16)
+	else if (ray->jump_nb == 4 * 16)
 		ray->jump =  2*  65;
-	else if (ray->jump_nb == 2 * 18)
+	else if (ray->jump_nb == 4 * 18)
 		ray->jump =  2*  0;
-	if (ray->jump_nb && ++ray->jump_nb == 2 * 20)
+	if (ray->jump_nb && ++ray->jump_nb == 4 * 20)
 		ray->jump_nb = 0;
 
 }
@@ -70,7 +70,9 @@ int	make_raycasting(t_ray *ray)
 
 	x = 0;
 	ray->width = WIDTH;
+	printf("%d\n", ray->hook->hook_d);
 	frame_jump(ray);
+	exec_hook(ray, ray->hook);
 	while (x < ray->width)
 	{
 		init_ray(ray, WIDTH, x, ray->player);
@@ -89,6 +91,6 @@ int	make_raycasting(t_ray *ray)
 		x++;
 	}
 	mlx_put_image_to_window(ray->win->mlx, ray->win->ptr, ray->win->frame.ptr, 0, 0);
-	mini_map(ray->win, ray->player);
+	// mini_map(ray->win, ray->player);
 	return (0);
 }

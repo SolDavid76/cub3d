@@ -6,7 +6,7 @@
 /*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 09:43:47 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/14 11:37:05 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/08/16 17:23:20 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,24 @@ typedef	struct s_player
 	double	rot_speed;
 }	t_player;
 
+typedef	struct s_hook
+{
+	int	hook_echap;
+	int	hook_w;
+	int	hook_a;
+	int	hook_s;
+	int	hook_d;
+	int	hook_rotate_r;
+	int	hook_rotate_l;
+	int	hook_jump;
+	int	hook_crouch;
+}	t_hook;
+
 typedef	struct s_ray
 {
-	t_win	*win;
+	t_win		*win;
 	t_player	*player;
+	t_hook		*hook;
 	// position de la colonne par rapport au centre
 	double		camera_x; 
 	// direction du rayon sur x et y
@@ -140,10 +154,15 @@ void	init_ray(t_ray *ray, int width, int x, t_player *player);
 void	draw_game(t_ray *ray, int x, t_win *win, t_player *player);
 void	init_ray(t_ray *ray, int width, int x, t_player *player);
 
-int	ft_keypress(int keycode, t_ray *ray);
+// int	ft_keypress(int keycode, t_ray *ray);
+int	ft_keypress(int keycode, t_hook *hook);
 int	ft_mlx_exit(t_win *win);
 
 double	ft_abs(double x);
+
+
+void	exec_hook(t_ray *ray, t_hook *hook);
+int	ft_key_release(int keycode, t_hook *hook);
 
 
 
