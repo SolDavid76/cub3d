@@ -6,7 +6,7 @@
 /*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 16:53:52 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/07 17:11:05 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/08/14 10:36:45 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	get_step_side(t_ray *ray, t_player *player)
 	if (ray->ray_dir_y < 0)
 	{
 		ray->step_y = -1;
-		ray->side_dist_y = (player->pos_y - ray->map_y) * ray->delta_dist_y;				
+		ray->side_dist_y = (player->pos_y - ray->map_y) * ray->delta_dist_y;
 	}
 	else
 	{
@@ -47,6 +47,7 @@ void	get_step_side(t_ray *ray, t_player *player)
 		ray->side_dist_y = (ray->map_y + 1 - player->pos_y) * ray->delta_dist_y;
 	}
 }
+
 void	init_ray(t_ray *ray, int width, int x, t_player *player)
 {
 	ray->camera_x = 2 * x / (double)width - 1;
@@ -58,6 +59,4 @@ void	init_ray(t_ray *ray, int width, int x, t_player *player)
 	ray->map_y = (int)player->pos_y;
 	ray->hauteur = 0;
 	get_step_side(ray, player);
-	
-
 }
