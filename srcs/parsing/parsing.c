@@ -6,7 +6,7 @@
 /*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 17:56:08 by djanusz           #+#    #+#             */
-/*   Updated: 2023/08/11 14:45:20 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/08/18 15:34:40 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,6 +224,8 @@ int	get_rgb(char *str)
 		tmp = 0;
 		while ('0' <= str[i] && str[i] <= '9')
 			tmp = (tmp * 10) + (str[i++] - '0');
+		if (tmp < 0 || 255 < tmp || (str[i] && str[i] != ','))
+			return (-1);
 		res = (res * 256) + tmp;
 		while (str[i] == ' ' || str[i] == ',')
 			i++;
@@ -476,7 +478,7 @@ t_win	*parsing(char *path)
 	win->data = init_data();
 	get_textures(win->data, get_infos(open(path, O_RDONLY)), win->mlx);
 	if (!win->data->north || !win->data->south || !win->data->west
-		|| !win->data->east || !win->data->floor || !win->data->sky)
+		|| !win->data->east || win->data->floor == -1 || win->data->sky == -1)
 		free_win(win, "Something went wrong with textures paths\n");
 	if (path_finding(win, ft_strsdup(win->data->map)))
 		free_win(win, "Something went wrong with the map\n");
