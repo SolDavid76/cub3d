@@ -6,7 +6,7 @@
 /*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:09:01 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/18 14:44:32 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/08/18 15:47:14 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,12 @@ int	make_raycasting(t_ray *ray)
 		init_ray(ray, WIDTH, x, ray->player);
 		dda(ray);
 		ray->hauteur = (int)(HEIGHT / ray->fix_dist);
+		if (ray->hauteur < 0)
+			ray->hauteur = INT_MAX;
 		ray->start_h = (-ray->hauteur) / 2 + HEIGHT / 2 \
 		+ (ray->jump / ray->fix_dist);
 		ray->end_h = ray->hauteur / 2 + HEIGHT / 2 \
-		+ (ray->jump / ray->fix_dist);
+		+ (ray->jump / ray->fix_dist); 
 		if (ray->start_h < 0)
 			ray->start_h = 0;
 		if (ray->end_h >= HEIGHT)

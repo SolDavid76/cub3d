@@ -6,7 +6,7 @@
 /*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:47:42 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/18 14:44:53 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/08/18 16:14:20 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,11 @@ void	w_and_s(t_ray *ray, t_player *player, int sign)
 	// printf("1 %f\n", player->pos_x);
 	if (sign == 0)
 	{
-		if (ray->win->data->map[(int)(player->pos_x + player->dir_x *(0.02))] \
+		if (ray->win->data->map[(int)(player->pos_x + player->dir_x *(0.02) - 0.1)] \
 		[(int)player->pos_y] != '1')
 			player->pos_x += player->dir_x *(0.02);
 		if (ray->win->data->map[(int)player->pos_x] \
-		[(int)(player->pos_y + player->dir_y *(0.02))] != '1')
+		[(int)(player->pos_y + player->dir_y *(0.02) - 0.1)] != '1')
 			player->pos_y += player->dir_y *(0.02);
 	}
 	else
@@ -63,11 +63,11 @@ void	a_and_d(t_ray *ray, t_player *player, int sign)
 {
 	if (sign == 0)
 	{
-		if (ray->win->data->map[(int)(player->pos_x + player->plane_x *(0.02))] \
+		if (ray->win->data->map[(int)(player->pos_x + player->plane_x *(0.02)+ 0.1)] \
 		[(int)player->pos_y] != '1')
 			player->pos_x += player->plane_x *(0.02);
 		if (ray->win->data->map[(int)player->pos_x] \
-		[(int)(player->pos_y + player->plane_y *(0.02))] != '1')
+		[(int)(player->pos_y + player->plane_y *(0.02) + 0.1)] != '1')
 			player->pos_y += player->plane_y *(0.02);
 	}
 	else
