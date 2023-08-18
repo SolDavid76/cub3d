@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 09:43:47 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/16 17:23:20 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/08/18 14:41:46 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,9 @@ int	init_mlx(t_data *data);
 int	make_raycasting(t_ray *ray);
 
 t_win	*parsing(char *path);
-void	mini_map(t_win *win, t_player *player);
+int		ft_strslen(char **strs);
+void	mini_map(t_win *win, t_player *player, char **map);
+void	past_img_to_frame(t_img frame, t_img img, int x, int y);
 
 /* graphics.c */
 t_win	*init_window(void);

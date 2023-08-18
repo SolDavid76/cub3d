@@ -6,7 +6,7 @@
 /*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:09:01 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/16 18:57:23 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/08/18 14:44:32 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	make_raycasting(t_ray *ray)
 		draw_game(ray, x, ray->win, ray->player);
 		x++;
 	}
+	mini_map(ray->win, ray->player, ray->win->data->map);
 	mlx_put_image_to_window(ray->win->mlx, ray->win->ptr, ray->win->frame.ptr, 0, 0);
-	// mini_map(ray->win, ray->player);
 	return (0);
 }
