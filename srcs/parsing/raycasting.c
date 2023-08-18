@@ -6,7 +6,7 @@
 /*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:09:01 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/16 17:56:41 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/08/16 18:57:23 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ int	make_raycasting(t_ray *ray)
 
 	x = 0;
 	ray->width = WIDTH;
-	printf("%d\n", ray->hook->hook_d);
 	frame_jump(ray);
 	exec_hook(ray, ray->hook);
 	while (x < ray->width)
