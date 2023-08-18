@@ -6,7 +6,7 @@
 /*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 12:51:57 by djanusz           #+#    #+#             */
-/*   Updated: 2023/08/08 17:49:28 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/08/16 16:40:26 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,27 @@ t_img	*ft_img(void *mlx, char *path, int width, int height)
 		return (free(img), NULL);
 	img->pxl = mlx_get_data_addr(img->ptr, &img->bpp, &img->len, &img->endian);
 	return (img);
+}
+
+void	past_img_to_frame(t_img frame, t_img img, int x, int y)
+{
+	char	*dst;
+	char	*src;
+	int		i;
+	int		j;
+	int		p;
+
+	i = -1;
+	while (++i < 150)
+	{
+		j = -1;
+		while (++j < 150)
+		{
+			src = img.pxl + (i * img.len + j * (img.bpp / 8));
+			dst = frame.pxl + ((i + y) * frame.len + (j + x) * (frame.bpp / 8));
+			p = -1;
+			while (++p < 4)
+				dst[p] = src[p];
+		}
+	}
 }
