@@ -6,18 +6,21 @@
 /*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:47:42 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/18 16:14:20 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/08/23 10:27:38 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube.h"
 
-int	ft_mlx_exit(t_win *win)
+int	ft_mlx_exit(t_ray *ray)
 {
-	mlx_destroy_image(win->mlx, win->frame.ptr);
-	mlx_destroy_window(win->mlx, win->ptr);
-	mlx_destroy_display(win->mlx);
-	free(win->mlx);
+	free(ray->player);
+	free(ray->hook);
+	mlx_destroy_image(ray->win->mlx, ray->win->frame.ptr);
+	mlx_destroy_window(ray->win->mlx, ray->win->ptr);
+	mlx_destroy_display(ray->win->mlx);
+	free(ray->win->mlx);
+	free(ray);
 	exit(0);
 }
 
@@ -34,26 +37,69 @@ void	ft_rotate(t_player *pl, double rt_spd)
 	pl->plane_y = old_plane_x * sin(rt_spd) + pl->plane_y * cos(rt_spd);
 }
 
+int	hitbox_player(t_ray *ray, double x, double y)
+{
+	int	flag;
+
+	flag = 0;
+	if (ray->win->data->map[(int)(x + 0.05)][(int)y] == '1')
+		flag = 1;
+	else if (ray->win->data->map[(int)(x - 0.05)][(int)y] == '1')
+		flag = 1;
+	else if (ray->win->data->map[(int)(x)][(int)(y + 0.05)] == '1')
+		flag = 1;
+	else if (ray->win->data->map[(int)(x)][(int)(y - 0.05)] == '1')
+		flag = 1;
+	return (flag);
+}
+
+int	hitbox_player_x(t_ray *ray, t_player *player, double x, double y)
+{
+	int	flag;
+
+	flag = 0;
+	if (player->pos_x < x && ray->win->data->map[(int)(x + 0.1)][(int)y] == '1')
+		flag = 1;
+	else if (player->pos_x > x && ray->win->data->map[(int)(x - 0.1)][(int)y] == '1')
+		flag = 1;
+	return (flag);
+}
+
+int	hitbox_player_y(t_ray *ray, t_player *player, double x, double y)
+{
+	int	flag;
+
+	flag = 0;
+	if (player->pos_y < y && ray->win->data->map[(int)(x)][(int)(y + 0.1)] == '1')
+		flag = 1;
+	else if (player->pos_y > y && ray->win->data->map[(int)(x)][(int)(y - 0.1)] == '1')
+		flag = 1;
+	return (flag);
+}
+
 void	w_and_s(t_ray *ray, t_player *player, int sign)
 {
+	double tmp_x;
+	double tmp_y;
+	
 	// printf("1 %f\n", player->pos_x);
 	if (sign == 0)
 	{
-		if (ray->win->data->map[(int)(player->pos_x + player->dir_x *(0.02) - 0.1)] \
-		[(int)player->pos_y] != '1')
-			player->pos_x += player->dir_x *(0.02);
-		if (ray->win->data->map[(int)player->pos_x] \
-		[(int)(player->pos_y + player->dir_y *(0.02) - 0.1)] != '1')
-			player->pos_y += player->dir_y *(0.02);
+		tmp_x = player->pos_x + player->dir_x * (0.02);
+		tmp_y = player->pos_y + player->dir_y * (0.02);
+		if (hitbox_player_x(ray, player, tmp_x, player->pos_y) == 0)
+			player->pos_x = tmp_x;
+		if (hitbox_player_y(ray, player, player->pos_x, tmp_y) == 0)
+			player->pos_y = tmp_y;
 	}
 	else
 	{
-		if (ray->win->data->map[(int)(player->pos_x - player->dir_x *(0.02))] \
-		[(int)player->pos_y] != '1')
-			player->pos_x -= player->dir_x *(0.02);
-		if (ray->win->data->map[(int)player->pos_x] \
-		[(int)(player->pos_y - player->dir_y *(0.02))] != '1')
-			player->pos_y -= player->dir_y *(0.02);
+		tmp_x = player->pos_x - player->dir_x * (0.02);
+		tmp_y = player->pos_y - player->dir_y * (0.02);
+		if (hitbox_player_x(ray, player, tmp_x, player->pos_y) == 0)
+		player->pos_x = tmp_x;
+		if (hitbox_player_y(ray, player, player->pos_x, tmp_y) == 0)
+			player->pos_y = tmp_y;
 	}
 	// printf("2 %f\n", player->pos_x);
 
@@ -61,23 +107,26 @@ void	w_and_s(t_ray *ray, t_player *player, int sign)
 
 void	a_and_d(t_ray *ray, t_player *player, int sign)
 {
+	double tmp_x;
+	double tmp_y;
+	
 	if (sign == 0)
 	{
-		if (ray->win->data->map[(int)(player->pos_x + player->plane_x *(0.02)+ 0.1)] \
-		[(int)player->pos_y] != '1')
-			player->pos_x += player->plane_x *(0.02);
-		if (ray->win->data->map[(int)player->pos_x] \
-		[(int)(player->pos_y + player->plane_y *(0.02) + 0.1)] != '1')
-			player->pos_y += player->plane_y *(0.02);
+		tmp_x = player->pos_x + player->plane_x * (0.02);
+		tmp_y = player->pos_y + player->plane_y * (0.02);
+		if (hitbox_player_x(ray, player, tmp_x, player->pos_y) == 0)
+			player->pos_x = tmp_x;
+		if (hitbox_player_y(ray, player, player->pos_x, tmp_y) == 0)
+			player->pos_y = tmp_y;
 	}
 	else
 	{
-		if (ray->win->data->map[(int)(player->pos_x - player->plane_x *(0.02))] \
-		[(int)player->pos_y] != '1')
-			player->pos_x -= player->plane_x *(0.02);
-		if (ray->win->data->map[(int)player->pos_x] \
-		[(int)(player->pos_y - player->plane_y *(0.02))] != '1')
-			player->pos_y -= player->plane_y *(0.02);
+		tmp_x = player->pos_x - player->plane_x * (0.02);
+		tmp_y = player->pos_y - player->plane_y * (0.02);
+		if (hitbox_player_x(ray, player, tmp_x, player->pos_y) == 0)
+			player->pos_x = tmp_x;
+		if (hitbox_player_y(ray, player, player->pos_x, tmp_y) == 0)
+			player->pos_y = tmp_y;
 	}
 }
 
@@ -122,7 +171,7 @@ void	crouch(t_ray *ray)
 void	exec_hook(t_ray *ray, t_hook *hook)
 {
 	if (hook->hook_echap == 1)
-		ft_mlx_exit(ray->win);
+		ft_mlx_exit(ray);
 	if (hook->hook_w == 1)
 		w_and_s(ray, ray->player, 0);
 	if (hook->hook_a == 1)
@@ -137,8 +186,10 @@ void	exec_hook(t_ray *ray, t_hook *hook)
 		ft_rotate(ray->player, ray->player->rot_speed);
 	if (hook->hook_jump == 1)
 		jump(ray);
-	if (hook->hook_crouch == 1)
+	if (hook->hook_crouch == 1 && hook->hook_jump != 1)
 		crouch(ray);
+	if (hook->hook_crouch == 0 && hook->hook_jump == 0)
+		ray->jump = 0;
 }
 
 
@@ -160,7 +211,7 @@ int	ft_keypress(int keycode, t_hook *hook)
 		hook->hook_rotate_l = 1;
 	if (keycode == 32)
 		hook->hook_jump = 1;
-	if (keycode == 65505)
+	if (keycode == 65505 && hook->hook_jump != 1)
 		hook->hook_crouch = 1;
 	return (0);	
 }
@@ -179,8 +230,8 @@ int	ft_key_release(int keycode, t_hook *hook)
 		hook->hook_rotate_r = 0;
 	if (keycode == 65361)
 		hook->hook_rotate_l = 0;
-	if (keycode == 32)
-		hook->hook_jump = 0;
+	// if (keycode == 32)
+		// hook->hook_jump = 0;
 	if (keycode == 65505)
 		hook->hook_crouch = 0;
 	return (0);	

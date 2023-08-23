@@ -6,7 +6,7 @@
 /*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 09:36:55 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/16 17:52:52 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/08/23 10:30:24 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ void	init_dir(t_player *player, t_ray *ray)
 
 t_player	*init_player(t_player *player, t_ray *ray)
 {
-	player = malloc(sizeof(t_player));
 	player->pos_x = ray->win->data->spawn_x + 0.5;
 	player->pos_y = ray->win->data->spawn_y + 0.5;
 	init_dir(player, ray);
@@ -87,11 +86,53 @@ void	get_wall_dist(t_ray *ray)
 		ray->hit = 1;
 }
 
+void init_struct(t_ray *ray)
+{
+	ray->ray_dir_x = 1;
+	ray->ray_dir_y = 1;
+	ray->map_x = 0;
+	ray->map_y = 0;
+	ray->side_dist_x = 0;
+	ray->side_dist_y = 0;
+	ray->delta_dist_x = 0;
+	ray->delta_dist_y = 0;
+	ray->step_x = 0;
+	ray->step_y = 0;
+	ray->hit = 0;
+	ray->side = 0;
+	ray->fix_dist = 0;
+	ray->hauteur = 0;
+	ray->start_h = 0;
+	ray->end_h = 0;
+	ray->jump = 0;
+	ray->jump_nb = 0;
+	ray->width = 0;
+	ray->wall_x = 0;
+	ray->text_x = 0;
+	ray->text_y = 0;
+	ray->step = 0;
+	ray->tex_pos = 0;
+}
+
+t_player *init_struct_player(t_player *player)
+{
+	player = malloc(sizeof(t_player));
+	player->pos_x = 0;
+	player->pos_y = 0;
+	player->dir_x = 0;
+	player->dir_y = 0;
+	player->plane_x = 0;
+	player->plane_y = 0;
+	player->rot_speed = 0;
+	return (player);
+}
 int	main(int ac, char **av)
 {
 	t_ray		*ray;
 	
 	ray = malloc(sizeof(t_ray));
+	init_struct(ray);
+	ray->player = init_struct_player(ray->player);
 	ray->win = parsing(av[1]);
 	ray->win->ptr = mlx_new_window(ray->win->mlx, ray->win->width, \
 	ray->win->height, "cub3D");

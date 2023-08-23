@@ -6,7 +6,7 @@
 /*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:09:01 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/18 15:47:14 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/08/21 14:03:28 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,10 @@ void	frame_jump(t_ray *ray)
 	else if (ray->jump_nb == 4 * 18)
 		ray->jump =  2*  0;
 	if (ray->jump_nb && ++ray->jump_nb == 4 * 20)
+{	
 		ray->jump_nb = 0;
-
+		ray->hook->hook_jump = 0;
+}
 }
 int	make_raycasting(t_ray *ray)
 {

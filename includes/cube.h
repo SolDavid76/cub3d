@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 09:43:47 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/18 15:32:34 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/08/23 10:25:09 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,7 @@ void	init_ray(t_ray *ray, int width, int x, t_player *player);
 
 // int	ft_keypress(int keycode, t_ray *ray);
 int	ft_keypress(int keycode, t_hook *hook);
-int	ft_mlx_exit(t_win *win);
+int	ft_mlx_exit(t_ray *ray);
 
 double	ft_abs(double x);
 
