@@ -6,7 +6,7 @@
 /*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 09:43:47 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/23 10:25:09 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/08/29 11:41:49 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,23 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <limits.h>
-#include "parsing.h"
+# include "parsing.h"
 # define HEIGHT 720
 # define WIDTH 1280
 # define TEXT_WIDTH 50
+# define M_SPEED	0.01
+
+# define KEY_ESC 65307
+# define KEY_W 119
+# define KEY_A 97
+# define KEY_S 115
+# define KEY_D 100
+# define KEY_RIGHT 65363
+# define KEY_LEFT 65361
+# define KEY_SHIFT 65505
+# define KEY_SPACE 32
+# define KEY_CTRL 65507
+# define KEY_TAB 65289
 
 typedef struct s_img
 {
@@ -85,6 +98,8 @@ typedef	struct s_hook
 	int	hook_rotate_l;
 	int	hook_jump;
 	int	hook_crouch;
+	int	hook_sprint;
+	int	hook_tab;
 }	t_hook;
 
 typedef	struct s_ray
@@ -128,6 +143,8 @@ typedef	struct s_ray
 	int		text_y;
 	double	step;
 	double	tex_pos;
+	double		speed;
+	int		pause;
 
 }	t_ray;
 
@@ -165,6 +182,28 @@ double	ft_abs(double x);
 
 void	exec_hook(t_ray *ray, t_hook *hook);
 int	ft_key_release(int keycode, t_hook *hook);
+void	ft_rotate(t_player *pl, double rt_spd);
+
+t_hook	*init_hook(t_hook *hook);
+void	init_dir(t_player *player, t_ray *ray);
+t_player	*init_player(t_player *player, t_ray *ray);
+void	init_struct(t_ray *ray);
+t_player	*init_struct_player(t_player *player);
+
+void	select_speed(t_ray *ray);
+void	crouch(t_ray *ray);
+void	jump(t_ray *ray);
+void	a_and_d(t_ray *ray, t_player *player, int sign);
+void	w_and_s(t_ray *ray, t_player *player, int sign);
+void	ft_rotate(t_player *pl, double rt_spd);
+
+void	frame_jump(t_ray *ray);
+int	hitbox_player_y(t_ray *ray, t_player *p, double x, double y);
+int	hitbox_player_x(t_ray *ray, t_player *p, double x, double y);
+
+
+
+
 
 
 

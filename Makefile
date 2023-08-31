@@ -1,20 +1,28 @@
-SRCS_DIR	=	srcs/parsing/
+SRCS_PARSING_DIR	=	srcs/parsing/
 
-SRC			=	parsing.c\
-				graphics.c\
-				lst.c\
-				test.c\
-				mini_map.c\
-				raycasting.c\
-				drawing.c\
-				raycasting_utils.c\
-				move.c\
+SRC_PARSING		=	parsing.c\
+					graphics.c\
+					lst.c\
+					mini_map.c\
 
-SRCS		=	$(addprefix $(SRCS_DIR), $(SRC))
+SRCS_GAME_DIR	=	srcs/game/
+
+SRC_GAME		=	move.c\
+					drawing.c\
+					raycasting.c\
+					raycasting_utils.c\
+					main.c\
+					init.c\
+					hook.c\
+					move_utils.c\
+				
+SRCS		=	$(addprefix $(SRCS_PARSING_DIR), $(SRC_PARSING))\
+				$(addprefix $(SRCS_GAME_DIR), $(SRC_GAME))
 
 OBJS_DIR	=	objs/
 
-OBJ			=	${SRC:.c=.o}
+OBJ			=	${SRC_PARSING:.c=.o}\
+				${SRC_GAME:.c=.o}
 
 OBJS		=	$(addprefix $(OBJS_DIR), $(OBJ))
 
@@ -35,7 +43,10 @@ all:		MAKE_MLX ${OBJS_DIR} ${NAME}
 ${OBJS_DIR}:
 			mkdir ${OBJS_DIR}
 
-${OBJS_DIR}%.o: ${SRCS_DIR}%.c
+${OBJS_DIR}%.o: ${SRCS_PARSING_DIR}%.c
+			${CC} ${CFLAGS} -c $< -o $@ ${INCS}
+
+${OBJS_DIR}%.o: ${SRCS_GAME_DIR}%.c
 			${CC} ${CFLAGS} -c $< -o $@ ${INCS}
 
 ${NAME}:	${OBJS}

@@ -6,17 +6,16 @@
 /*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:15:48 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/21 10:44:41 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/08/28 10:39:19 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube.h"
 
-
 void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
 {
 	char	*pixel;
-	
+
 	if (x < 0 || y < 0 || x > WIDTH - 1 || y > HEIGHT - 1)
 		return ;
 	pixel = img->pxl + (y * img->len + x * (img->bpp / 8));
@@ -41,8 +40,6 @@ void	draw_game(t_ray *ray, int x, t_win *win, t_player *player)
 	int	y;
 
 	y = 0;
-	
-	// printf("%d\n", ray->hauteur);
 	while (y < ray->start_h)
 		my_mlx_pixel_put(&win->frame, x, y++, ray->win->data->sky);
 	while (y < ray->end_h)
@@ -59,7 +56,6 @@ void	draw_game(t_ray *ray, int x, t_win *win, t_player *player)
 			draw(ray, x, y, ray->win->data->south);
 		y++;
 	}
-	// printf("%d\n", y);
 	while (y < HEIGHT - 1)
 		my_mlx_pixel_put(&win->frame, x, y++, ray->win->data->floor);
 	(void)player;

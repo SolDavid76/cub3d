@@ -6,7 +6,7 @@
 /*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:09:01 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/21 14:03:28 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/08/31 10:31:54 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,59 +40,58 @@ void	get_text(t_ray *ray, t_player *player)
 	ray->tex_pos = (ray->start_h - (ray->jump / ray->fix_dist) - HEIGHT / 2 \
 	+ ray->hauteur / 2) * ray->step;
 }
-void	frame_jump(t_ray *ray)
+
+void	mouse_ation(t_ray *ray)
 {
-	if (ray->jump_nb == 4 * 2)
-		ray->jump =  2*  50;
-	else if (ray->jump_nb == 4 * 4)
-		ray->jump =  2*  100;
-	else if (ray->jump_nb == 4 * 6)
-		ray->jump =  2*  150;
-	else if (ray->jump_nb == 4 * 8)
-		ray->jump =  2*  200;
-	else if (ray->jump_nb == 4 * 10)
-		ray->jump =  2*  200;
-	else if (ray->jump_nb == 4 * 12)
-		ray->jump =  2*  200;
-	else if (ray->jump_nb == 4 * 14)
-		ray->jump =  2*  130;
-	else if (ray->jump_nb == 4 * 16)
-		ray->jump =  2*  65;
-	else if (ray->jump_nb == 4 * 18)
-		ray->jump =  2*  0;
-	if (ray->jump_nb && ++ray->jump_nb == 4 * 20)
-{	
-		ray->jump_nb = 0;
-		ray->hook->hook_jump = 0;
+	int	m_x;
+	int	m_y;
+
+	if (ray->pause == 0)
+	{
+		// mlx_mouse_hide(ray->win->mlx, ray->win->ptr);
+		mlx_mouse_get_pos(ray->win->mlx, ray->win->ptr, &m_x, &m_y);
+		if (m_x > WIDTH / 2)
+			ft_rotate(ray->player, (double)(-M_SPEED * \
+			((m_x - (WIDTH / 2)) * 100 / WIDTH)));
+		else if (m_x < WIDTH / 2)
+			ft_rotate(ray->player, (double)(-M_SPEED * \
+			((m_x - (WIDTH / 2)) * 100 / WIDTH)));
+		mlx_mouse_move(ray->win->mlx, ray->win->ptr, WIDTH / 2, HEIGHT / 2);
+	}	
 }
+
+void	define_height(t_ray *ray)
+{
+	ray->hauteur = (int)(HEIGHT / ray->fix_dist);
+	if (ray->hauteur < 0)
+		ray->hauteur = INT_MAX;
+	ray->start_h = (-ray->hauteur) / 2 + HEIGHT / 2 \
+	+ (ray->jump / ray->fix_dist);
+	ray->end_h = ray->hauteur / 2 + HEIGHT / 2 \
+	+ (ray->jump / ray->fix_dist);
+	if (ray->start_h < 0)
+		ray->start_h = 0;
+	if (ray->end_h >= HEIGHT)
+		ray->end_h = HEIGHT - 1;
 }
+
 int	make_raycasting(t_ray *ray)
 {
 	int	x;
 
 	x = 0;
-	ray->width = WIDTH;
 	frame_jump(ray);
 	exec_hook(ray, ray->hook);
-	while (x < ray->width)
+	while (x < WIDTH)
 	{
 		init_ray(ray, WIDTH, x, ray->player);
 		dda(ray);
-		ray->hauteur = (int)(HEIGHT / ray->fix_dist);
-		if (ray->hauteur < 0)
-			ray->hauteur = INT_MAX;
-		ray->start_h = (-ray->hauteur) / 2 + HEIGHT / 2 \
-		+ (ray->jump / ray->fix_dist);
-		ray->end_h = ray->hauteur / 2 + HEIGHT / 2 \
-		+ (ray->jump / ray->fix_dist); 
-		if (ray->start_h < 0)
-			ray->start_h = 0;
-		if (ray->end_h >= HEIGHT)
-			ray->end_h = HEIGHT - 1;
+		define_height(ray);
 		get_text(ray, ray->player);
 		draw_game(ray, x, ray->win, ray->player);
 		x++;
 	}
+	mouse_ation(ray);
 	mini_map(ray->win, ray->player, ray->win->data->map);
 	mlx_put_image_to_window(ray->win->mlx, ray->win->ptr, ray->win->frame.ptr, 0, 0);
 	return (0);

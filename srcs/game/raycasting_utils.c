@@ -6,7 +6,7 @@
 /*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 16:53:52 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/18 15:31:33 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/08/29 11:19:28 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,22 @@ void	init_ray(t_ray *ray, int width, int x, t_player *player)
 	ray->map_y = (int)player->pos_y;
 	ray->hauteur = 0;
 	get_step_side(ray, player);
+}
+
+void	get_wall_dist(t_ray *ray)
+{
+	if (ray->side_dist_x < ray->side_dist_y)
+	{
+		ray->side_dist_x += ray->delta_dist_x;
+		ray->map_x += ray->step_x;
+		ray->side = 0;
+	}
+	else
+	{
+		ray->side_dist_y += ray->delta_dist_y;
+		ray->map_y += ray->step_y;
+		ray->side = 1;
+	}
+	if (ray->win->data->map[ray->map_x][ray->map_y] == '1')
+		ray->hit = 1;
 }
