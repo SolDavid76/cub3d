@@ -6,7 +6,7 @@
 /*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/08 15:47:42 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/29 11:26:10 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/09/04 15:19:40 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ void	w_and_s(t_ray *ray, t_player *player, int sign)
 
 	if (sign == 0)
 	{
-		tmp_x = player->pos_x + player->dir_x * (0.02 * ray->speed);
-		tmp_y = player->pos_y + player->dir_y * (0.02 * ray->speed);
+		tmp_x = player->pos_x + player->dir_x * (P_SPEED * ray->speed);
+		tmp_y = player->pos_y + player->dir_y * (P_SPEED * ray->speed);
 		if (hitbox_player_x(ray, player, tmp_x, player->pos_y) == 0)
 			player->pos_x = tmp_x;
 		if (hitbox_player_y(ray, player, player->pos_x, tmp_y) == 0)
@@ -41,8 +41,8 @@ void	w_and_s(t_ray *ray, t_player *player, int sign)
 	}
 	else
 	{
-		tmp_x = player->pos_x - player->dir_x * (0.02 * ray->speed);
-		tmp_y = player->pos_y - player->dir_y * (0.02 * ray->speed);
+		tmp_x = player->pos_x - player->dir_x * (P_SPEED * ray->speed);
+		tmp_y = player->pos_y - player->dir_y * (P_SPEED * ray->speed);
 		if (hitbox_player_x(ray, player, tmp_x, player->pos_y) == 0)
 		player->pos_x = tmp_x;
 		if (hitbox_player_y(ray, player, player->pos_x, tmp_y) == 0)
@@ -57,8 +57,8 @@ void	a_and_d(t_ray *ray, t_player *player, int sign)
 
 	if (sign == 0)
 	{
-		tmp_x = player->pos_x + player->plane_x * (0.02 * ray->speed);
-		tmp_y = player->pos_y + player->plane_y * (0.02 * ray->speed);
+		tmp_x = player->pos_x + player->plane_x * (P_SPEED * ray->speed);
+		tmp_y = player->pos_y + player->plane_y * (P_SPEED * ray->speed);
 		if (hitbox_player_x(ray, player, tmp_x, player->pos_y) == 0)
 			player->pos_x = tmp_x;
 		if (hitbox_player_y(ray, player, player->pos_x, tmp_y) == 0)
@@ -66,8 +66,8 @@ void	a_and_d(t_ray *ray, t_player *player, int sign)
 	}
 	else
 	{
-		tmp_x = player->pos_x - player->plane_x * (0.02 * ray->speed);
-		tmp_y = player->pos_y - player->plane_y * (0.02 * ray->speed);
+		tmp_x = player->pos_x - player->plane_x * (P_SPEED * ray->speed);
+		tmp_y = player->pos_y - player->plane_y * (P_SPEED * ray->speed);
 		if (hitbox_player_x(ray, player, tmp_x, player->pos_y) == 0)
 			player->pos_x = tmp_x;
 		if (hitbox_player_y(ray, player, player->pos_x, tmp_y) == 0)

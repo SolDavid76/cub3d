@@ -6,7 +6,7 @@
 /*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:15:48 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/28 10:39:19 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/09/04 16:24:42 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	draw_game(t_ray *ray, int x, t_win *win, t_player *player)
 	y = 0;
 	while (y < ray->start_h)
 		my_mlx_pixel_put(&win->frame, x, y++, ray->win->data->sky);
-	while (y < ray->end_h)
+	while (y < ray->end_h - 1)
 	{
 		ray->tex_pos += ray->step;
 		ray->text_y = (int)ray->tex_pos;

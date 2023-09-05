@@ -6,7 +6,7 @@
 /*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 11:20:29 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/29 11:26:18 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/09/05 10:55:35 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,23 +60,23 @@ void	select_speed(t_ray *ray)
 
 void	frame_jump(t_ray *ray)
 {
-	if (ray->jump_nb == 3 * 2)
+	if (ray->jump_nb == 2 * 2)
 		ray->jump = 2 * 35;
-	else if (ray->jump_nb == 3 * 4)
+	else if (ray->jump_nb == 2 * 4)
 		ray->jump = 2 * 70;
-	else if (ray->jump_nb == 3 * 6)
+	else if (ray->jump_nb == 2 * 6)
 		ray->jump = 2 * 110;
-	else if (ray->jump_nb == 3 * 8)
+	else if (ray->jump_nb == 2 * 8)
 		ray->jump = 2 * 150;
-	else if (ray->jump_nb == 3 * 10)
+	else if (ray->jump_nb == 2 * 10)
 		ray->jump = 2 * 150;
-	else if (ray->jump_nb == 3 * 12)
+	else if (ray->jump_nb == 2 * 12)
 		ray->jump = 2 * 110;
-	else if (ray->jump_nb == 3 * 13)
+	else if (ray->jump_nb == 2 * 13)
 		ray->jump = 2 * 55;
-	else if (ray->jump_nb == 3 * 16)
+	else if (ray->jump_nb == 2 * 16)
 		ray->jump = 2 * 0;
-	if (ray->jump_nb && ++ray->jump_nb == 3 * 18)
+	if (ray->jump_nb && ++ray->jump_nb == 2 * 18)
 	{	
 		ray->jump_nb = 0;
 		ray->hook->hook_jump = 0;

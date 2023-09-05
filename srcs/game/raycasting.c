@@ -6,11 +6,13 @@
 /*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:09:01 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/31 10:31:54 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/09/05 10:41:32 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube.h"
+
+#include <sys/time.h>
 
 void	dda(t_ray *ray)
 {
@@ -75,12 +77,40 @@ void	define_height(t_ray *ray)
 		ray->end_h = HEIGHT - 1;
 }
 
+unsigned long 	get_time(void)
+{
+	struct timeval tmp;
+	unsigned long	second;
+	unsigned long	micro_second;
+	unsigned long	milli_second;
+
+	gettimeofday(&tmp, NULL);
+	second = tmp.tv_sec * 1000;
+	micro_second = tmp.tv_usec / 1000;
+	milli_second = second + micro_second;
+	return (milli_second);	
+}
+// static int bob = 0;
+// static long now = 0;
+
 int	make_raycasting(t_ray *ray)
 {
 	int	x;
-
+	
 	x = 0;
+	
+	
+	// if (now == 0)
+	// 	now = get_time();
+	// int a = (get_time() - now);
+	// if (bob != a)
+	// 	printf("%d\n", a);
+	// bob = a;
+	// now = get_time();
+	
+	
 	frame_jump(ray);
+	printf(" w %d s %d d %d a %d\n", ray->hook->hook_w, ray->hook->hook_s, ray->hook->hook_d, ray->hook->hook_a);
 	exec_hook(ray, ray->hook);
 	while (x < WIDTH)
 	{

@@ -6,7 +6,7 @@
 /*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 09:43:47 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/29 11:41:49 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/09/05 15:13:00 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,9 @@
 # define HEIGHT 720
 # define WIDTH 1280
 # define TEXT_WIDTH 50
-# define M_SPEED	0.01
+# define M_SPEED 0.01
+# define P_SPEED 0.04
+# define R_SPEED 0.05
 
 # define KEY_ESC 65307
 # define KEY_W 119

@@ -6,7 +6,7 @@
 /*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 11:13:05 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/29 11:44:18 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/09/05 10:41:24 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	ft_pause(t_ray *ray)
 
 void	exec_hook(t_ray *ray, t_hook *hook)
 {
+	// printf(" w %d s %d d %d a %d\n", hook->hook_w, hook->hook_s, hook->hook_d, hook->hook_a);
 	if (hook->hook_echap == 1)
 		ft_mlx_exit(ray);
 	if (hook->hook_w == 1)
@@ -70,6 +71,7 @@ int	ft_keypress(int keycode, t_hook *hook)
 		hook->hook_sprint = 1;
 	if (keycode == KEY_TAB)
 		hook->hook_tab = 1;
+	// printf(" w %d s %d d %d a %d\n", hook->hook_w, hook->hook_s, hook->hook_d, hook->hook_a);
 	return (0);
 }
 

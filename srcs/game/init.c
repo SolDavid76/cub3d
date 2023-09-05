@@ -6,7 +6,7 @@
 /*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 10:56:49 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/29 11:45:18 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/09/05 10:59:53 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ t_player	*init_player(t_player *player, t_ray *ray)
 	player->pos_x = ray->win->data->spawn_x + 0.5;
 	player->pos_y = ray->win->data->spawn_y + 0.5;
 	init_dir(player, ray);
-	player->rot_speed = 0.01;
+	player->rot_speed = R_SPEED;
 	return (player);
 }
 
