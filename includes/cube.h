@@ -6,7 +6,7 @@
 /*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 09:43:47 by ennollet          #+#    #+#             */
-/*   Updated: 2023/09/07 15:58:25 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/09/07 17:05:18 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # define TEXT_WIDTH 50
 # define M_SPEED 0.01
 # define P_SPEED 0.04
-# define R_SPEED 0.05
+# define R_SPEED 0.02
 
 # define KEY_ESC 65307
 # define KEY_W 119
