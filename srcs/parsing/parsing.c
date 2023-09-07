@@ -6,7 +6,7 @@
 /*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 17:56:08 by djanusz           #+#    #+#             */
-/*   Updated: 2023/08/18 15:34:40 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/09/07 17:09:22 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,13 +238,13 @@ void	get_textures(t_data *data, t_list *lst, void *mlx)
 	while (lst)
 	{
 		if (!ft_strncmp(lst->str, "NO", 2))
-			data->north = ft_img(mlx, lst->str + space(lst->str, 2), 50, 50);
+			data->north = ft_img(mlx, lst->str + space(lst->str, 2));
 		else if (!ft_strncmp(lst->str, "SO", 2))
-			data->south = ft_img(mlx, lst->str + space(lst->str, 2), 50, 50);
+			data->south = ft_img(mlx, lst->str + space(lst->str, 2));
 		else if (!ft_strncmp(lst->str, "WE", 2))
-			data->west = ft_img(mlx, lst->str + space(lst->str, 2), 50, 50);
+			data->west = ft_img(mlx, lst->str + space(lst->str, 2));
 		else if (!ft_strncmp(lst->str, "EA", 2))
-			data->east = ft_img(mlx, lst->str + space(lst->str, 2), 50, 50);
+			data->east = ft_img(mlx, lst->str + space(lst->str, 2));
 		else if (!ft_strncmp(lst->str, "F", 1))
 			data->floor = get_rgb(lst->str + space(lst->str, 1));
 		else if (!ft_strncmp(lst->str, "C", 1))

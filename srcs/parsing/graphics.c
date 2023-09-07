@@ -6,7 +6,7 @@
 /*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 12:51:57 by djanusz           #+#    #+#             */
-/*   Updated: 2023/09/07 16:05:50 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/09/07 17:08:46 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,14 @@ t_win	*init_window(void)
 	return (win);
 }
 
-t_img	*ft_img(void *mlx, char *path, int width, int height)
+t_img	*ft_img(void *mlx, char *path)
 {
 	t_img	*img;
 
 	img = malloc(sizeof(t_img));
 	if (!img)
 		return (NULL);
-	img->ptr = mlx_xpm_file_to_image(mlx, path, &width, &height);
+	img->ptr = mlx_xpm_file_to_image(mlx, path, &img->width, &img->height);
 	if (!img->ptr)
 		return (free(img), NULL);
 	img->pxl = mlx_get_data_addr(img->ptr, &img->bpp, &img->len, &img->endian);
