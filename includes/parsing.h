@@ -6,7 +6,7 @@
 /*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 17:57:57 by djanusz           #+#    #+#             */
-/*   Updated: 2023/08/11 12:16:18 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/09/07 16:42:29 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,37 +19,6 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include "cube.h"
-
-// typedef struct s_img
-// {
-// 	void	*ptr;
-// 	char	*pxl;
-// 	int		bpp;
-// 	int		len;
-// 	int		endian;
-// }			t_img;
-
-// typedef struct s_data
-// {
-// 	char	**map;
-// 	t_img	*north;
-// 	t_img	*south;
-// 	t_img	*west;
-// 	t_img	*east;
-// 	char	*floor;
-// 	char	*sky;
-// }			t_data;
-
-// typedef struct s_win
-// {
-// 	void	*mlx;
-// 	void	*ptr;
-// 	int		width;
-// 	int		height;
-// 	t_img	frame;
-// 	t_img	minimap;
-// 	t_data	*data;
-// }			t_win;
 
 typedef struct s_list
 {

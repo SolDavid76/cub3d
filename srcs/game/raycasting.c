@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:09:01 by ennollet          #+#    #+#             */
-/*   Updated: 2023/09/05 10:41:32 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/09/05 16:01:20 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ int	make_raycasting(t_ray *ray)
 	
 	
 	frame_jump(ray);
-	printf(" w %d s %d d %d a %d\n", ray->hook->hook_w, ray->hook->hook_s, ray->hook->hook_d, ray->hook->hook_a);
+	// printf(" w %d s %d d %d a %d\n", ray->hook->hook_w, ray->hook->hook_s, ray->hook->hook_d, ray->hook->hook_a);
 	exec_hook(ray, ray->hook);
 	while (x < WIDTH)
 	{
