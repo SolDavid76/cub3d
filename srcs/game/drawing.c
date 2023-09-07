@@ -6,7 +6,7 @@
 /*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:15:48 by ennollet          #+#    #+#             */
-/*   Updated: 2023/09/04 16:24:42 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/09/07 16:30:23 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
 
 int	get_color(t_img *img, int x, int y)
 {
+	if (x < 0 || y < 0 || x > WIDTH - 1 || y > HEIGHT - 1)
+		return (0);
 	return (*(int *)(img->pxl + (y * img->len + x * (img->bpp / 8))));
 }
 

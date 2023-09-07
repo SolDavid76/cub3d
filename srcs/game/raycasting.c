@@ -6,7 +6,7 @@
 /*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:09:01 by ennollet          #+#    #+#             */
-/*   Updated: 2023/09/05 10:41:32 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/09/07 17:02:47 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,23 +25,74 @@ void	dda(t_ray *ray)
 	else
 		ray->fix_dist = (ray->side_dist_y - ray->delta_dist_y);
 }
+int	select_text(t_ray *ray, t_data *data)
+{
+	int	ret;
+	
+	if (ray->side == 1 && ray->ray_dir_y < 0)
+	{
+		ret = ray->win->data->west->len / 4;
+		ray->text_y = ft_strlen(data->west->pxl) / data->west->len;
+	}
+	else if (ray->side == 1 && ray->ray_dir_y >= 0)
+	{
+		ret = ray->win->data->east->len / 4;
+		ray->text_y = ft_strlen(data->east->pxl) / data->east->len;
+	
+	}
+	else if (ray->side == 0 && ray->ray_dir_x < 0)
+	{
+		ret = ray->win->data->north->len / 4;
+		ray->text_y = ft_strlen(data->north->pxl);
+	}
+	else if (ray->side == 0 && ray->ray_dir_x >= 0)
+	{
+		ret = ray->win->data->south->len / 4;
+		ray->text_y = ft_strlen(data->south->pxl) / data->south->len;
+	}
+	return (ret);
+}
 
 void	get_text(t_ray *ray, t_player *player)
 {
+	int tmp;
+
+	tmp = select_text(ray, ray->win->data);
+	// ray->win->data->north->
 	if (ray->side == 0)
 		ray->wall_x = player->pos_y + ray->fix_dist * ray->ray_dir_y;
 	else
 		ray->wall_x = player->pos_x + ray->fix_dist * ray->ray_dir_x;
 	ray->wall_x -= floor(ray->wall_x);
-	ray->text_x = (ray->wall_x *(TEXT_WIDTH));
+	ray->text_x = (ray->wall_x *(tmp));
 	if (ray->side == 0 && ray->ray_dir_x > 0)
-		ray->text_x = TEXT_WIDTH - ray->text_x - 1;
+		ray->text_x = tmp - ray->text_x - 1;
 	else if (ray->side == 1 && ray->ray_dir_y < 0)
-		ray->text_x = TEXT_WIDTH - ray->text_x - 1;
-	ray->step = 1.0 * TEXT_WIDTH / ray->hauteur;
+		ray->text_x = tmp - ray->text_x - 1;
+	ray->step = 1.0 * tmp / ray->hauteur;
 	ray->tex_pos = (ray->start_h - (ray->jump / ray->fix_dist) - HEIGHT / 2 \
 	+ ray->hauteur / 2) * ray->step;
 }
+
+// void	get_text(t_ray *ray, t_player *player)
+// {
+// 	// int tmp;
+
+// 	// tmp = select_text(ray);
+// 	if (ray->side == 0)
+// 		ray->wall_x = player->pos_y + ray->fix_dist * ray->ray_dir_y;
+// 	else
+// 		ray->wall_x = player->pos_x + ray->fix_dist * ray->ray_dir_x;
+// 	ray->wall_x -= floor(ray->wall_x);
+// 	ray->text_x = (ray->wall_x *(TEXT_WIDTH));
+// 	if (ray->side == 0 && ray->ray_dir_x > 0)
+// 		ray->text_x = TEXT_WIDTH - ray->text_x - 1;
+// 	else if (ray->side == 1 && ray->ray_dir_y < 0)
+// 		ray->text_x = TEXT_WIDTH - ray->text_x - 1;
+// 	ray->step = 1.0 * TEXT_WIDTH / ray->hauteur;
+// 	ray->tex_pos = (ray->start_h - (ray->jump / ray->fix_dist) - HEIGHT / 2 
+// 	+ ray->hauteur / 2) * ray->step;
+// }
 
 void	mouse_ation(t_ray *ray)
 {
@@ -110,7 +161,7 @@ int	make_raycasting(t_ray *ray)
 	
 	
 	frame_jump(ray);
-	printf(" w %d s %d d %d a %d\n", ray->hook->hook_w, ray->hook->hook_s, ray->hook->hook_d, ray->hook->hook_a);
+	// printf(" w %d s %d d %d a %d\n", ray->hook->hook_w, ray->hook->hook_s, ray->hook->hook_d, ray->hook->hook_a);
 	exec_hook(ray, ray->hook);
 	while (x < WIDTH)
 	{
