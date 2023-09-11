@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:09:01 by ennollet          #+#    #+#             */
-/*   Updated: 2023/09/07 17:05:46 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/09/07 17:17:53 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,24 +31,23 @@ int	select_text(t_ray *ray, t_data *data)
 	
 	if (ray->side == 1 && ray->ray_dir_y < 0)
 	{
-		ret = ray->win->data->west->len / 4;
-		ray->text_y = ft_strlen(data->west->pxl) / data->west->len;
+		ret = data->west->width;
+		ray->text_y = data->west->height;
 	}
 	else if (ray->side == 1 && ray->ray_dir_y >= 0)
 	{
-		ret = ray->win->data->east->len / 4;
-		ray->text_y = ft_strlen(data->east->pxl) / data->east->len;
-	
+		ret = data->east->width;
+		ray->text_y = data->east->height;
 	}
 	else if (ray->side == 0 && ray->ray_dir_x < 0)
 	{
-		ret = ray->win->data->north->len / 4;
-		ray->text_y = ft_strlen(data->north->pxl);
+		ret = data->north->width;
+		ray->text_y = data->north->height;
 	}
 	else if (ray->side == 0 && ray->ray_dir_x >= 0)
 	{
-		ret = ray->win->data->south->len / 4;
-		ray->text_y = ft_strlen(data->south->pxl) / data->south->len;
+		ret = data->south->width;
+		ray->text_y = data->south->height;
 	}
 	return (ret);
 }
@@ -69,7 +68,7 @@ void	get_text(t_ray *ray, t_player *player)
 		ray->text_x = tmp - ray->text_x - 1;
 	else if (ray->side == 1 && ray->ray_dir_y < 0)
 		ray->text_x = tmp - ray->text_x - 1;
-	ray->step = 1.0 * tmp / ray->hauteur;
+	ray->step = 1.0 * ray->text_y / ray->hauteur;
 	ray->tex_pos = (ray->start_h - (ray->jump / ray->fix_dist) - HEIGHT / 2 \
 	+ ray->hauteur / 2) * ray->step;
 }

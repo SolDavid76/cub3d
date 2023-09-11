@@ -1,8 +1,8 @@
-NO      ./textures/exit.xpm
-SO 			./textures/grass.xpm
-WE ./textures/player.xpm
+NO      ./textures/Heimerdinger.xpm
+SO 			./textures/Amumu.xpm
+WE ./textures/Shaco.xpm
 
-EA ./textures/pokeball.xpm
+EA ./textures/Mundo.xpm
 
 
 
