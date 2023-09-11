@@ -6,7 +6,7 @@
 /*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 17:56:08 by djanusz           #+#    #+#             */
-/*   Updated: 2023/09/07 17:09:22 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/09/11 13:55:13 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -308,8 +308,8 @@ void	free_img(t_img *img, void *mlx)
 void	free_win(t_win *win, char *msg)
 {
 	mlx_destroy_image(win->mlx, win->frame.ptr);
-	mlx_destroy_image(win->mlx, win->mini_map.ptr);
 	free_tab(win->data->map);
+	free_img(win->mini_map, win->mlx);
 	free_img(win->data->north, win->mlx);
 	free_img(win->data->south, win->mlx);
 	free_img(win->data->west, win->mlx);
@@ -477,6 +477,7 @@ t_win	*parsing(char *path)
 	win = init_window();
 	win->data = init_data();
 	get_textures(win->data, get_infos(open(path, O_RDONLY)), win->mlx);
+	win->mini_map = init_minimap(win->mlx, win->data->map);
 	if (!win->data->north || !win->data->south || !win->data->west
 		|| !win->data->east || win->data->floor == -1 || win->data->sky == -1)
 		free_win(win, "Something went wrong with textures paths\n");

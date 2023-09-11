@@ -6,7 +6,7 @@
 /*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 12:51:57 by djanusz           #+#    #+#             */
-/*   Updated: 2023/09/07 17:08:46 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/09/11 13:59:31 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,21 @@ t_win	*init_window(void)
 	tmp.ptr = mlx_new_image(win->mlx, WIDTH, HEIGHT);
 	tmp.pxl = mlx_get_data_addr(tmp.ptr, &tmp.bpp, &tmp.len, &tmp.endian);
 	win->frame = tmp;
-	tmp.width = WIDTH * 0.2;
-	tmp.height = HEIGHT * 0.2;
-	tmp.ptr = mlx_new_image(win->mlx, WIDTH * 0.2, HEIGHT * 0.2);
-	tmp.pxl = mlx_get_data_addr(tmp.ptr, &tmp.bpp, &tmp.len, &tmp.endian);
-	win->mini_map = tmp;
 	return (win);
+}
+
+t_img	*init_minimap(void *mlx, char **map)
+{
+	t_img	*res;
+
+	res = malloc(sizeof(t_img));
+	if (!res)
+		ft_exit("NOT ENOUGH MEMORY");
+	res->width = (int)((WIDTH * 0.2) / ft_strlen(map[0])) * ft_strlen(map[0]);
+	res->height = (int)((HEIGHT * 0.2) / ft_strslen(map)) * ft_strslen(map);
+	res->ptr = mlx_new_image(mlx, WIDTH * 0.2, HEIGHT * 0.2);
+	res->pxl = mlx_get_data_addr(res->ptr, &res->bpp, &res->len, &res->endian);
+	return (res);
 }
 
 t_img	*ft_img(void *mlx, char *path)
