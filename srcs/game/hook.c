@@ -6,7 +6,7 @@
 /*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 11:13:05 by ennollet          #+#    #+#             */
-/*   Updated: 2023/09/07 16:41:05 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/09/11 15:45:11 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	ft_pause(t_ray *ray)
 
 void	exec_hook(t_ray *ray, t_hook *hook)
 {
-	// printf("%d\n", hook->hook_jump);
 	if (hook->hook_echap == 1)
 		ft_mlx_exit(ray);
 	if (hook->hook_w == 1)

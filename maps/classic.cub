@@ -1,17 +1,17 @@
-NO      ./textures/Heimerdinger.xpm
-SO 			./textures/Amumu.xpm
-WE ./textures/Shaco.xpm
+NO      ./textures/mossy.xpm
+SO 			./textures/redbrick.xpm
+WE ./textures/wood.xpm
 
-EA ./textures/Mundo.xpm
-
-
+EA ./textures/greystone.xpm
 
 
 
-F 8, 74, 26
-C 10, 108, 199
+
+
+F 0, 0, 0
+C 0, 0, 0
         1111111111111111111111111
-        1000000000110000000000001
+        1000000000110000000000011
         10110000011100000N0000001
         1001000000000000000000001
 111111111011000001110000000000001

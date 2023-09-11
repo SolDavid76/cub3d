@@ -6,11 +6,23 @@
 /*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 16:53:52 by ennollet          #+#    #+#             */
-/*   Updated: 2023/08/29 11:19:28 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/09/11 15:46:51 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube.h"
+
+void	dda(t_ray *ray)
+{
+	while (ray->hit != 1)
+	{
+		get_wall_dist(ray);
+	}
+	if (ray->side == 0)
+		ray->fix_dist = (ray->side_dist_x - ray->delta_dist_x);
+	else
+		ray->fix_dist = (ray->side_dist_y - ray->delta_dist_y);
+}
 
 void	get_delta(t_ray *ray)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 09:43:47 by ennollet          #+#    #+#             */
-/*   Updated: 2023/09/11 14:24:40 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/09/11 15:52:28 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@
 # include "parsing.h"
 # define HEIGHT 720
 # define WIDTH 1280
-# define TEXT_WIDTH 50
 # define M_SPEED 0.01
 # define P_SPEED 0.04
 # define R_SPEED 0.02
@@ -177,6 +176,7 @@ t_img	*init_minimap(void *mlx, char **map);
 void	free_tab(char **ptr);
 void	free_img(t_img *img, void *mlx);
 
+void	dda(t_ray *ray);
 void	get_wall_dist(t_ray *ray);
 void	init_ray(t_ray *ray, int width, int x, t_player *player);
 void	draw_game(t_ray *ray, int x, t_win *win, t_player *player);

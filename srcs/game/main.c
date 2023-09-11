@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 09:36:55 by ennollet          #+#    #+#             */
-/*   Updated: 2023/09/11 14:39:48 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/09/11 15:45:32 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ int	main(int ac, char **av)
 	ray = init_game(ray);
 	mlx_loop_hook(ray->win->mlx, make_raycasting, ray);
 	mlx_hook(ray->win->ptr, KeyPress, KeyPressMask, ft_keypress, ray->hook);
-	mlx_hook(ray->win->ptr, KeyRelease, KeyReleaseMask, ft_key_release, ray->hook);
+	mlx_hook(ray->win->ptr, KeyRelease, KeyReleaseMask, ft_key_release,
+		ray->hook);
 	mlx_hook(ray->win->ptr, 17, 0, ft_mlx_exit, ray);
 	mlx_loop(ray->win->mlx);
 	mlx_destroy_image(ray->win->mlx, ray->win->frame.ptr);

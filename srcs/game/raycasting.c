@@ -6,29 +6,28 @@
 /*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/07 14:09:01 by ennollet          #+#    #+#             */
-/*   Updated: 2023/09/07 17:17:53 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/09/11 15:46:44 by ennollet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube.h"
 
-#include <sys/time.h>
+// void	dda(t_ray *ray)
+// {
+// 	while (ray->hit != 1)
+// 	{
+// 		get_wall_dist(ray);
+// 	}
+// 	if (ray->side == 0)
+// 		ray->fix_dist = (ray->side_dist_x - ray->delta_dist_x);
+// 	else
+// 		ray->fix_dist = (ray->side_dist_y - ray->delta_dist_y);
+// }
 
-void	dda(t_ray *ray)
-{
-	while (ray->hit != 1)
-	{
-		get_wall_dist(ray);
-	}
-	if (ray->side == 0)
-		ray->fix_dist = (ray->side_dist_x - ray->delta_dist_x);
-	else
-		ray->fix_dist = (ray->side_dist_y - ray->delta_dist_y);
-}
 int	select_text(t_ray *ray, t_data *data)
 {
 	int	ret;
-	
+
 	if (ray->side == 1 && ray->ray_dir_y < 0)
 	{
 		ret = data->west->width;
@@ -54,10 +53,9 @@ int	select_text(t_ray *ray, t_data *data)
 
 void	get_text(t_ray *ray, t_player *player)
 {
-	int tmp;
+	int	tmp;
 
 	tmp = select_text(ray, ray->win->data);
-	// ray->win->data->north->
 	if (ray->side == 0)
 		ray->wall_x = player->pos_y + ray->fix_dist * ray->ray_dir_y;
 	else
@@ -73,26 +71,7 @@ void	get_text(t_ray *ray, t_player *player)
 	+ ray->hauteur / 2) * ray->step;
 }
 
-// void	get_text(t_ray *ray, t_player *player)
-// {
-// 	// int tmp;
-
-// 	// tmp = select_text(ray);
-// 	if (ray->side == 0)
-// 		ray->wall_x = player->pos_y + ray->fix_dist * ray->ray_dir_y;
-// 	else
-// 		ray->wall_x = player->pos_x + ray->fix_dist * ray->ray_dir_x;
-// 	ray->wall_x -= floor(ray->wall_x);
-// 	ray->text_x = (ray->wall_x *(TEXT_WIDTH));
-// 	if (ray->side == 0 && ray->ray_dir_x > 0)
-// 		ray->text_x = TEXT_WIDTH - ray->text_x - 1;
-// 	else if (ray->side == 1 && ray->ray_dir_y < 0)
-// 		ray->text_x = TEXT_WIDTH - ray->text_x - 1;
-// 	ray->step = 1.0 * TEXT_WIDTH / ray->hauteur;
-// 	ray->tex_pos = (ray->start_h - (ray->jump / ray->fix_dist) - HEIGHT / 2 
-// 	+ ray->hauteur / 2) * ray->step;
-// }
-
+// mlx_mouse_hide(ray->win->mlx, ray->win->ptr);
 void	mouse_ation(t_ray *ray)
 {
 	int	m_x;
@@ -100,7 +79,6 @@ void	mouse_ation(t_ray *ray)
 
 	if (ray->pause == 0)
 	{
-		// mlx_mouse_hide(ray->win->mlx, ray->win->ptr);
 		mlx_mouse_get_pos(ray->win->mlx, ray->win->ptr, &m_x, &m_y);
 		if (m_x > WIDTH / 2)
 			ft_rotate(ray->player, (double)(-M_SPEED * \
@@ -127,40 +105,12 @@ void	define_height(t_ray *ray)
 		ray->end_h = HEIGHT - 1;
 }
 
-unsigned long 	get_time(void)
-{
-	struct timeval tmp;
-	unsigned long	second;
-	unsigned long	micro_second;
-	unsigned long	milli_second;
-
-	gettimeofday(&tmp, NULL);
-	second = tmp.tv_sec * 1000;
-	micro_second = tmp.tv_usec / 1000;
-	milli_second = second + micro_second;
-	return (milli_second);	
-}
-// static int bob = 0;
-// static long now = 0;
-
 int	make_raycasting(t_ray *ray)
 {
 	int	x;
-	
+
 	x = 0;
-	
-	
-	// if (now == 0)
-	// 	now = get_time();
-	// int a = (get_time() - now);
-	// if (bob != a)
-	// 	printf("%d\n", a);
-	// bob = a;
-	// now = get_time();
-	
-	
 	frame_jump(ray);
-	// printf(" w %d s %d d %d a %d\n", ray->hook->hook_w, ray->hook->hook_s, ray->hook->hook_d, ray->hook->hook_a);
 	exec_hook(ray, ray->hook);
 	while (x < WIDTH)
 	{
@@ -173,6 +123,7 @@ int	make_raycasting(t_ray *ray)
 	}
 	mouse_ation(ray);
 	mini_map(ray->win, ray->player, ray->win->data->map);
-	mlx_put_image_to_window(ray->win->mlx, ray->win->ptr, ray->win->frame.ptr, 0, 0);
+	mlx_put_image_to_window(ray->win->mlx, ray->win->ptr,
+		ray->win->frame.ptr, 0, 0);
 	return (0);
 }
