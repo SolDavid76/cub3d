@@ -6,7 +6,7 @@
 /*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 09:43:47 by ennollet          #+#    #+#             */
-/*   Updated: 2023/09/11 13:55:53 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/09/11 14:24:40 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,10 @@ void	past_img_to_frame(t_img frame, t_img img, int x, int y);
 t_win	*init_window(void);
 t_img	*ft_img(void *mlx, char *path);
 t_img	*init_minimap(void *mlx, char **map);
+
+/* free.c */
+void	free_tab(char **ptr);
+void	free_img(t_img *img, void *mlx);
 
 void	get_wall_dist(t_ray *ray);
 void	init_ray(t_ray *ray, int width, int x, t_player *player);

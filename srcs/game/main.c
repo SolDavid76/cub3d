@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 09:36:55 by ennollet          #+#    #+#             */
-/*   Updated: 2023/09/04 14:46:14 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/09/11 14:39:48 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,12 @@ t_ray	*init_game(t_ray *ray)
 
 int	main(int ac, char **av)
 {
-	t_ray		*ray;
+	t_ray	*ray;
+	t_win	*win;
 
+	win = parsing(av[1]);
 	ray = malloc(sizeof(t_ray));
-	ray->win = parsing(av[1]);
+	ray->win = win;
 	ray->win->ptr = mlx_new_window(ray->win->mlx, ray->win->width, \
 	ray->win->height, "cub3D");
 	ray = init_game(ray);

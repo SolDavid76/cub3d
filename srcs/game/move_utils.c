@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 11:20:29 by ennollet          #+#    #+#             */
-/*   Updated: 2023/09/05 10:55:35 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/09/11 14:27:08 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,18 @@ int	ft_mlx_exit(t_ray *ray)
 {
 	free(ray->player);
 	free(ray->hook);
+	free_tab(ray->win->data->map);
+	free_img(ray->win->mini_map, ray->win->mlx);
+	free_img(ray->win->data->north, ray->win->mlx);
+	free_img(ray->win->data->south, ray->win->mlx);
+	free_img(ray->win->data->west, ray->win->mlx);
+	free_img(ray->win->data->east, ray->win->mlx);
+	free(ray->win->data);
 	mlx_destroy_image(ray->win->mlx, ray->win->frame.ptr);
 	mlx_destroy_window(ray->win->mlx, ray->win->ptr);
 	mlx_destroy_display(ray->win->mlx);
 	free(ray->win->mlx);
+	free(ray->win);
 	free(ray);
 	exit(0);
 }

@@ -6,7 +6,7 @@
 /*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 17:56:08 by djanusz           #+#    #+#             */
-/*   Updated: 2023/09/11 13:55:13 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/09/11 15:33:48 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,17 +102,16 @@ char	*ft_strjoin_char(char *str, char c)
 	return (res);
 }
 
-void	*free_tab(char **ptr)
+void	free_tab(char **ptr)
 {
 	int	i;
 
 	i = 0;
 	if (!ptr)
-		return (NULL);
+		return ;
 	while (ptr[i])
 		free(ptr[i++]);
 	free(ptr);
-	return (NULL);
 }
 
 void	ft_exit(char *msg)
@@ -147,7 +146,7 @@ t_list	*get_infos(int fd)
 		else
 			free(str);
 	}
-	return (close (fd), lst);
+	return (close(fd), lst);
 }
 
 int	space(char *str, int x)
@@ -235,6 +234,9 @@ int	get_rgb(char *str)
 
 void	get_textures(t_data *data, t_list *lst, void *mlx)
 {
+	t_list	*tmp;
+
+	tmp = lst;
 	while (lst)
 	{
 		if (!ft_strncmp(lst->str, "NO", 2))
@@ -254,7 +256,7 @@ void	get_textures(t_data *data, t_list *lst, void *mlx)
 		lst = lst->next;
 	}
 	data->map = mapping(lst);
-	ft_lst_free(lst);
+	ft_lst_free(tmp);
 }
 
 t_data	*init_data(void)
@@ -269,6 +271,8 @@ t_data	*init_data(void)
 	data->south = NULL;
 	data->west = NULL;
 	data->east = NULL;
+	data->floor = -1;
+	data->sky = -1;
 	return (data);
 }
 
@@ -381,16 +385,19 @@ int	path_finding_start(char **map)
 		j = -1;
 		while (map[i][++j])
 		{
-			if (map[i][j] == 'N' || map[i][j] == 'S'
-				|| map[i][j] == 'W' || map[i][j] == 'E')
+			if (map[i][j] != '0' && map[i][j] != '1' && map[i][j] != ' ')
 			{
-				map[i][j] = 'X';
-				res++;
+				if (map[i][j] == 'N' || map[i][j] == 'S'
+					|| map[i][j] == 'E' || map[i][j] == 'W')
+				{
+					map[i][j] = 'X';
+					res++;
+				}
+				else
+					return (-1);
 			}
 		}
 	}
-	if (res != 1)
-		free_tab(map);
 	return (res);
 }
 
@@ -449,7 +456,7 @@ int	path_finding(t_win *win, char **map)
 	int	n;
 
 	if (path_finding_start(map) != 1)
-		free_win(win, "Wrong number of player spawn\n");
+		return (free_tab(map), free_win(win, "Something went wrong\n"), -1);
 	n = 1;
 	while (n)
 	{
@@ -480,9 +487,9 @@ t_win	*parsing(char *path)
 	win->mini_map = init_minimap(win->mlx, win->data->map);
 	if (!win->data->north || !win->data->south || !win->data->west
 		|| !win->data->east || win->data->floor == -1 || win->data->sky == -1)
-		free_win(win, "Something went wrong with textures paths\n");
+		free_win(win, "Something went wrong\n");
 	if (path_finding(win, ft_strsdup(win->data->map)))
-		free_win(win, "Something went wrong with the map\n");
+		free_win(win, "Something went wrong\n");
 	win->data = fill_data(win->data);
 	return (win);
 }
