@@ -6,12 +6,11 @@
 /*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/21 12:51:57 by djanusz           #+#    #+#             */
-/*   Updated: 2023/09/11 13:59:31 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/09/11 16:35:54 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube.h"
-#include "parsing.h"
 
 t_win	*init_window(void)
 {
@@ -39,8 +38,8 @@ t_img	*init_minimap(void *mlx, char **map)
 	res = malloc(sizeof(t_img));
 	if (!res)
 		ft_exit("NOT ENOUGH MEMORY");
-	res->width = (int)((WIDTH * 0.2) / ft_strlen(map[0])) * ft_strlen(map[0]);
-	res->height = (int)((HEIGHT * 0.2) / ft_strslen(map)) * ft_strslen(map);
+	res->width = (int)((WIDTH * 0.2) / ft_strlen(map[0])) *ft_strlen(map[0]);
+	res->height = (int)((HEIGHT * 0.2) / ft_strslen(map)) *ft_strslen(map);
 	res->ptr = mlx_new_image(mlx, WIDTH * 0.2, HEIGHT * 0.2);
 	res->pxl = mlx_get_data_addr(res->ptr, &res->bpp, &res->len, &res->endian);
 	return (res);

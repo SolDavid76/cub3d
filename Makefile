@@ -1,9 +1,15 @@
 SRCS_PARSING_DIR	=	srcs/parsing/
 
-SRC_PARSING		=	parsing.c\
+SRC_PARSING		=	data.c\
+					free.c\
+					getters.c\
 					graphics.c\
 					lst.c\
 					mini_map.c\
+					parsing.c\
+					path_finding.c\
+					utils.c\
+					utils_aux.c\
 
 SRCS_GAME_DIR	=	srcs/game/
 

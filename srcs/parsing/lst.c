@@ -6,11 +6,11 @@
 /*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 18:22:41 by djanusz           #+#    #+#             */
-/*   Updated: 2023/07/21 13:28:25 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/09/11 16:34:53 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#include "cube.h"
 
 t_list	*ft_lstnew(char *str)
 {

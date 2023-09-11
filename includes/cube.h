@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ennollet <ennollet@student.42.fr>          +#+  +:+       +#+        */
+/*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 09:43:47 by ennollet          #+#    #+#             */
-/*   Updated: 2023/09/11 15:52:28 by ennollet         ###   ########.fr       */
+/*   Updated: 2023/09/11 16:40:48 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@
 # include "../srcs/minilibx-linux/mlx.h"
 # include <X11/keysym.h>
 # include <stdlib.h>
+# include <fcntl.h>
 # include <X11/X.h>
 # include <unistd.h>
 # include <stdio.h>
 # include <limits.h>
-# include "parsing.h"
 # define HEIGHT 720
 # define WIDTH 1280
 # define M_SPEED 0.01
@@ -39,6 +39,18 @@
 # define KEY_SPACE 32
 # define KEY_CTRL 65507
 # define KEY_TAB 65289
+
+typedef struct s_coords
+{
+	int	x;
+	int	y;
+}		t_coords;
+
+typedef struct s_list
+{
+	char			*str;
+	struct s_list	*next;
+}					t_list;
 
 typedef struct s_img
 {
@@ -158,23 +170,67 @@ typedef struct s_game
 	t_ray		ray;
 }				t_game;
 
-void	my_mlx_pixel_put(t_img *img, int x, int y, int color);
-int	init_mlx(t_data *data);
-int	make_raycasting(t_ray *ray);
-
-t_win	*parsing(char *path);
+/* utils.c */
+int		ft_strlen(char *str);
+int		ft_strchr(char *str, char c);
+int		ft_strcmp(char *s1, char *s2);
+int		ft_strncmp(const char *s1, const char *s2, int n);
+char	*ft_strdup(char *str);
 int		ft_strslen(char **strs);
-void	mini_map(t_win *win, t_player *player, char **map);
-void	past_img_to_frame(t_img frame, t_img img, int x, int y);
+char	**ft_strsdup(char **strs);
+int		ft_strschr(char **strs, char c);
+
+/* lst.c */
+t_list	*ft_lstnew(char *str);
+int		ft_lstsize(t_list *lst);
+t_list	*ft_lstlast(t_list *lst);
+void	ft_lstadd_back(t_list **lst, t_list *new);
+void	*ft_lst_free(t_list	*lst);
+int		ft_lst_maxlen(t_list *lst);
+
+/* getters.c */
+t_list	*get_infos(int fd);
+int		get_rgb(char *str);
+char	*mapping_aux(char *str, int len);
+char	**mapping(t_list *lst);
+void	get_textures(t_data *data, t_list *lst, void *mlx);
+
+/* data.c */
+t_data	*init_data(void);
+t_data	*fill_data(t_data *data);
+
+/* free.c */
+void	ft_exit(char *msg);
+void	free_tab(char **ptr);
+void	free_img(t_img *img, void *mlx);
+void	free_win(t_win *win, char *msg);
+
+/* path_finding.c */
+int		path_finding_start(char **map);
+int		path_finding_aux_check(char **map, int y, int x);
+int		path_finding_aux(char **map, int x, int y);
+int		path_finding_verif(char **map);
+int		path_finding(t_win *win, char **map);
 
 /* graphics.c */
 t_win	*init_window(void);
 t_img	*ft_img(void *mlx, char *path);
 t_img	*init_minimap(void *mlx, char **map);
+void	past_img_to_frame(t_img frame, t_img img, int x, int y);
 
-/* free.c */
-void	free_tab(char **ptr);
-void	free_img(t_img *img, void *mlx);
+/* mini_map.c */
+void	mini_map_aux(t_img *mini_map, t_coords coords, char **map, int color);
+void	mini_map(t_win *win, t_player *player, char **map);
+
+/* parsing.c */
+int		ft_lst_maxlen(t_list *lst);
+int		space(char *str, int x);
+char	*ft_strjoin_char(char *str, char c);
+t_win	*parsing(char *path);
+
+void	my_mlx_pixel_put(t_img *img, int x, int y, int color);
+int	init_mlx(t_data *data);
+int	make_raycasting(t_ray *ray);
 
 void	dda(t_ray *ray);
 void	get_wall_dist(t_ray *ray);

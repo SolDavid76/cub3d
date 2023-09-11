@@ -6,11 +6,10 @@
 /*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 12:41:20 by djanusz           #+#    #+#             */
-/*   Updated: 2023/09/11 13:57:46 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/09/11 16:34:55 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
 #include "cube.h"
 
 void	mini_map_aux(t_img *mini_map, t_coords coords, char **map, int color)
