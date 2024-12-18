@@ -161,10 +161,6 @@ Invalid map configuration
 ![Capture d'écran 1](https://github.com/SolDavid76/cub3d/blob/main/screenshots/2.png)
 ![Capture d'écran 2](https://github.com/SolDavid76/cub3d/blob/main/screenshots/1.png)
 
-### 🎥 **Vidéo de démonstration**
-
-[![Vidéo de démo](path/to/demo_thumbnail.png)](path/to/demo_video.mp4)
-
 ---
 
 ## 📚 **Licence**
