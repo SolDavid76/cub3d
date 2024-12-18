@@ -149,7 +149,7 @@ Invalid map configuration
 ## 📝 **Exemple**
 
 ```bash
-./cub3D maps/example.cub
+./cub3D maps/map.cub
 ```
 
 ---
